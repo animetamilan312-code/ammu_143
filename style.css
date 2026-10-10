@@ -116,10 +116,9 @@ img {
   display: block;
 
   /* Responsive size without disturbing the layout */
-  width: clamp(100px, 13vw, 150px);
-height: auto;
-max-width: 25%;
-max-height: 160px;
+width: clamp(110px, 15vw, 165px);
+max-width: 30%;
+max-height: 175px;
 
   object-fit: contain;
   pointer-events: none;
@@ -760,10 +759,10 @@ h2 span {
 
 /* Small, responsive GIF stickers */
  .page-sticker {
-  width: clamp(75px, 20vw, 110px);
+  width: clamp(80px, 22vw, 120px);
   height: auto;
-  max-width: 25%;
-  max-height: 120px;
+  max-width: 30%;
+  max-height: 130px;
 }
 
   .sticker-top-left,
