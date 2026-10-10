@@ -116,10 +116,10 @@ img {
   display: block;
 
   /* Responsive size without disturbing the layout */
-  width: clamp(42px, 6vw, 68px);
-  height: auto;
-  max-width: 18%;
-  max-height: 75px;
+  width: clamp(100px, 13vw, 150px);
+height: auto;
+max-width: 25%;
+max-height: 160px;
 
   object-fit: contain;
   pointer-events: none;
@@ -759,12 +759,12 @@ h2 span {
   }
 
 /* Small, responsive GIF stickers */
-  .page-sticker {
-    width: clamp(38px, 10vw, 52px);
-    height: auto;
-    max-width: 15%;
-    max-height: 58px;
-  }
+ .page-sticker {
+  width: clamp(75px, 20vw, 110px);
+  height: auto;
+  max-width: 25%;
+  max-height: 120px;
+}
 
   .sticker-top-left,
   .sticker-top-right {
