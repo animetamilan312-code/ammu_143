@@ -1,18 +1,21 @@
 "use strict";
 
 /* =========================================================
-   PERSONAL MESSAGE
-   Un birthday message-ai indha quotes-kulla paste pannalaam.
-   Example: const birthdayMessage = "Your own message here";
+   PERSONAL SETTINGS
 ========================================================= */
 
 const birthdayMessage = "WRITE YOUR PERSONAL BIRTHDAY MESSAGE HERE";
+
+// Change this password if you want.
+const unlockPassword = "AMMU";
 
 /* =========================================================
    HELPERS
 ========================================================= */
 
-const $ = (selector, parent = document) => parent.querySelector(selector);
+const $ = (selector, parent = document) =>
+  parent.querySelector(selector);
+
 const $$ = (selector, parent = document) =>
   Array.from(parent.querySelectorAll(selector));
 
@@ -26,9 +29,143 @@ const heartsContainer = $("#hearts-container");
 const petalsContainer = $("#petals-container");
 const sparklesContainer = $("#sparkles-container");
 
+const birthdayMessageDisplay = $("#birthdayMessageDisplay");
+
 let currentScene = 1;
 let previousFocusedElement = null;
-let lastDecorationTime = 0;
+let typewriterStarted = false;
+let typewriterTimers = [];
+let finalSurpriseRevealed = false;
+
+/* =========================================================
+   PASSWORD GATE
+========================================================= */
+
+const siteLock = $("#siteLock");
+const unlockForm = $("#unlockForm");
+const unlockPasswordInput = $("#unlockPassword");
+const lockError = $("#lockError");
+
+function unlockSite() {
+  if (!siteLock) return;
+
+  siteLock.hidden = true;
+  document.body.style.overflow = "";
+
+  if (lockError) {
+    lockError.textContent = "";
+  }
+
+  showScene(1);
+
+  const firstButton = $('#scene1 [data-next="2"]');
+
+  if (firstButton) {
+    firstButton.focus();
+  }
+}
+
+if (siteLock && unlockForm && unlockPasswordInput) {
+  document.body.style.overflow = "hidden";
+
+  unlockForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const enteredPassword = unlockPasswordInput.value.trim();
+
+    if (
+      enteredPassword.toUpperCase() !==
+      unlockPassword.toUpperCase()
+    ) {
+      if (lockError) {
+        lockError.textContent =
+          "Incorrect password. Try again, Ammu. ♡";
+      }
+
+      unlockPasswordInput.value = "";
+      unlockPasswordInput.focus();
+      return;
+    }
+
+    unlockSite();
+  });
+}
+
+/* =========================================================
+   TYPEWRITER LOVE LETTER
+========================================================= */
+
+function stopTypewriterTimers() {
+  typewriterTimers.forEach((timer) => clearTimeout(timer));
+  typewriterTimers = [];
+}
+
+function startTypewriter() {
+  if (typewriterStarted) return;
+
+  const letterScene = $("#scene9");
+
+  if (!letterScene) return;
+
+  const paragraphs = $$(".typewriter-text", letterScene);
+
+  if (!paragraphs.length) return;
+
+  typewriterStarted = true;
+
+  if (reducedMotion) return;
+
+  paragraphs.forEach((paragraph, paragraphIndex) => {
+    const fullText = paragraph.textContent.replace(/\s+/g, " ").trim();
+
+    paragraph.textContent = "";
+    paragraph.classList.add("typing");
+
+    let characterIndex = 0;
+
+    function typeNextCharacter() {
+      if (!letterScene.classList.contains("active")) {
+        paragraph.textContent = fullText;
+        paragraph.classList.remove("typing");
+        return;
+      }
+
+      if (characterIndex < fullText.length) {
+        paragraph.textContent += fullText.charAt(characterIndex);
+        characterIndex++;
+
+        const timer = window.setTimeout(typeNextCharacter, 20);
+        typewriterTimers.push(timer);
+      } else {
+        paragraph.classList.remove("typing");
+      }
+    }
+
+    const startTimer = window.setTimeout(
+      typeNextCharacter,
+      450 + paragraphIndex * 350
+    );
+
+    typewriterTimers.push(startTimer);
+  });
+}
+
+function resetTypewriter() {
+  stopTypewriterTimers();
+  typewriterStarted = false;
+
+  $$(".typewriter-text").forEach((paragraph) => {
+    paragraph.classList.remove("typing");
+    paragraph.textContent = paragraph.dataset.fullText ||
+      paragraph.textContent;
+  });
+}
+
+/* Store original letter text before any animation begins. */
+$$(".typewriter-text").forEach((paragraph) => {
+  paragraph.dataset.fullText =
+    paragraph.textContent.replace(/\s+/g, " ").trim();
+});
 
 /* =========================================================
    SCENE NAVIGATION
@@ -37,18 +174,21 @@ let lastDecorationTime = 0;
 function showScene(sceneNumber) {
   const index = Number(sceneNumber) - 1;
 
-  if (!Number.isInteger(index) || index < 0 || index >= scenes.length) {
+  if (
+    !Number.isInteger(index) ||
+    index < 0 ||
+    index >= scenes.length
+  ) {
     return;
   }
 
   currentScene = index + 1;
 
   scenes.forEach((scene, sceneIndex) => {
-    scene.classList.toggle("active", sceneIndex === index);
-    scene.setAttribute(
-      "aria-hidden",
-      sceneIndex === index ? "false" : "true"
-    );
+    const isActive = sceneIndex === index;
+
+    scene.classList.toggle("active", isActive);
+    scene.setAttribute("aria-hidden", String(!isActive));
   });
 
   if (progressBar) {
@@ -58,6 +198,15 @@ function showScene(sceneNumber) {
 
   if (birthdayMessageDisplay) {
     birthdayMessageDisplay.textContent = birthdayMessage;
+  }
+
+  if (index === 8) {
+    startTypewriter();
+  }
+
+  if (index === 0) {
+    resetFinalSurprise();
+    resetCakeWish();
   }
 
   window.scrollTo({
@@ -71,7 +220,6 @@ function showScene(sceneNumber) {
     stopFireworks();
   }
 
-  // Ask the browser to load photos in the current scene.
   scenes[index].querySelectorAll("img[loading='lazy']").forEach((img) => {
     img.loading = "eager";
   });
@@ -79,8 +227,7 @@ function showScene(sceneNumber) {
 
 $$("[data-next]").forEach((button) => {
   button.addEventListener("click", () => {
-    const nextScene = Number(button.dataset.next);
-    showScene(nextScene);
+    showScene(Number(button.dataset.next));
   });
 });
 
@@ -89,11 +236,12 @@ const restartButton = $("#restartButton");
 if (restartButton) {
   restartButton.addEventListener("click", () => {
     closePhotoViewer();
+    resetFinalSurprise();
+    resetCakeWish();
+    resetTypewriter();
     showScene(1);
   });
 }
-
-const birthdayMessageDisplay = $("#birthdayMessageDisplay");
 
 if (birthdayMessageDisplay) {
   birthdayMessageDisplay.textContent = birthdayMessage;
@@ -107,10 +255,10 @@ function addFloatingItem(container, className, symbol, options = {}) {
   if (!container || reducedMotion) return;
 
   const item = document.createElement("span");
+
   item.className = className;
   item.textContent = symbol;
   item.setAttribute("aria-hidden", "true");
-
   item.style.left = `${Math.random() * 96}%`;
 
   if (options.top) {
@@ -118,16 +266,15 @@ function addFloatingItem(container, className, symbol, options = {}) {
   }
 
   const duration = options.duration || 8;
+
   item.style.animationDuration = `${duration}s`;
   item.style.fontSize = `${options.size || 18}px`;
 
-  if (options.delay) {
-    item.style.animationDelay = `${options.delay}s`;
-  }
-
   container.appendChild(item);
 
-  window.setTimeout(() => item.remove(), (duration + 1) * 1000);
+  window.setTimeout(() => {
+    item.remove();
+  }, (duration + 1) * 1000);
 }
 
 function createHeart() {
@@ -169,39 +316,33 @@ function createSparkle() {
   );
 }
 
-/* Limit background animation on small screens and hidden tabs. */
-const isSmallScreen = window.matchMedia("(max-width: 600px)").matches;
+const isSmallScreen = window.matchMedia(
+  "(max-width: 600px)"
+).matches;
 
 if (!reducedMotion) {
   window.setInterval(() => {
-    if (document.hidden) return;
-    createHeart();
+    if (!document.hidden) createHeart();
   }, isSmallScreen ? 1600 : 1000);
 
   window.setInterval(() => {
-    if (document.hidden) return;
-    createPetal();
+    if (!document.hidden) createPetal();
   }, isSmallScreen ? 2500 : 1700);
 
   window.setInterval(() => {
-    if (document.hidden) return;
-    createSparkle();
+    if (!document.hidden) createSparkle();
   }, isSmallScreen ? 1200 : 750);
 }
 
 /* =========================================================
-   MUSIC PLAYER
+   MUSIC PLAYER + REACTIVE HEART
 ========================================================= */
 
 const birthdaySong = $("#birthdaySong");
 const musicButton = $("#musicButton");
 const musicLabel = $("#musicLabel");
 
-let musicIsPlaying = false;
-
 function updateMusicButton(isPlaying) {
-  musicIsPlaying = isPlaying;
-
   if (musicButton) {
     musicButton.classList.toggle("is-playing", isPlaying);
     musicButton.setAttribute("aria-pressed", String(isPlaying));
@@ -217,25 +358,32 @@ function updateMusicButton(isPlaying) {
 }
 
 if (birthdaySong && musicButton) {
-  birthdaySong.addEventListener("play", () => updateMusicButton(true));
-  birthdaySong.addEventListener("pause", () => updateMusicButton(false));
-  birthdaySong.addEventListener("ended", () => updateMusicButton(false));
+  birthdaySong.addEventListener("play", () => {
+    updateMusicButton(true);
+  });
+
+  birthdaySong.addEventListener("pause", () => {
+    updateMusicButton(false);
+  });
+
+  birthdaySong.addEventListener("ended", () => {
+    updateMusicButton(false);
+  });
 
   musicButton.addEventListener("click", async () => {
     if (birthdaySong.paused) {
       try {
         await birthdaySong.play();
-        updateMusicButton(true);
       } catch (error) {
         updateMusicButton(false);
+
         console.warn(
-          "Music could not start. Check the music file path and format.",
+          "Music could not start. Check music/Song.mp3.",
           error
         );
       }
     } else {
       birthdaySong.pause();
-      updateMusicButton(false);
     }
   });
 
@@ -254,9 +402,12 @@ const expandedPhoto = $("#expandedPhoto");
 const closePhotoViewerButton = $("#closePhotoViewer");
 
 function openPhotoViewer(image) {
-  if (!photoViewer || !expandedPhoto || !image || !image.src) return;
+  if (!photoViewer || !expandedPhoto || !image || !image.src) {
+    return;
+  }
 
   previousFocusedElement = document.activeElement;
+
   expandedPhoto.src = image.currentSrc || image.src;
   expandedPhoto.alt = image.alt || "Expanded memory";
 
@@ -286,6 +437,8 @@ function closePhotoViewer() {
   ) {
     previousFocusedElement.focus();
   }
+
+  previousFocusedElement = null;
 }
 
 $$(".memory-photo").forEach((image) => {
@@ -293,17 +446,24 @@ $$(".memory-photo").forEach((image) => {
     if (image.complete && image.naturalWidth > 0) {
       openPhotoViewer(image);
     } else {
-      console.warn(`Photo is missing or could not load: ${image.src}`);
+      console.warn(
+        `Photo is missing or could not load: ${image.src}`
+      );
     }
   });
 
   image.addEventListener("error", () => {
-    console.warn(`Please check this photo path: ${image.getAttribute("src")}`);
+    console.warn(
+      `Please check this photo path: ${image.getAttribute("src")}`
+    );
   });
 });
 
 if (closePhotoViewerButton) {
-  closePhotoViewerButton.addEventListener("click", closePhotoViewer);
+  closePhotoViewerButton.addEventListener(
+    "click",
+    closePhotoViewer
+  );
 }
 
 if (photoViewer) {
@@ -315,7 +475,10 @@ if (photoViewer) {
 }
 
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && photoViewer?.classList.contains("open")) {
+  if (
+    event.key === "Escape" &&
+    photoViewer?.classList.contains("open")
+  ) {
     closePhotoViewer();
   }
 });
@@ -422,7 +585,9 @@ function drawFireworks(timestamp) {
     if (particle.alpha <= 0) continue;
 
     fireworksContext.globalAlpha = particle.alpha;
-    fireworksContext.fillStyle = `hsl(${particle.hue} 90% 68%)`;
+    fireworksContext.fillStyle =
+      `hsl(${particle.hue} 90% 68%)`;
+
     fireworksContext.beginPath();
     fireworksContext.arc(
       particle.x,
@@ -481,13 +646,86 @@ function stopFireworks() {
   }
 }
 
-if (fireworksButton) {
-  fireworksButton.addEventListener("click", () => {
-    launchFireworks(5000);
+/* =========================================================
+   CAKE WISH + FINAL SURPRISE
+========================================================= */
+
+const birthdayCakeButton = $("#birthdayCakeButton");
+const cakeWishMessage = $("#cakeWishMessage");
+const finalSurprise = $("#finalSurprise");
+const finalReplayButton = $("#finalReplayButton");
+
+function resetCakeWish() {
+  if (cakeWishMessage) {
+    cakeWishMessage.hidden = true;
+  }
+
+  if (birthdayCakeButton) {
+    birthdayCakeButton.classList.remove("cake-celebration");
+  }
+}
+
+if (birthdayCakeButton) {
+  birthdayCakeButton.addEventListener("click", () => {
+    if (cakeWishMessage) {
+      cakeWishMessage.hidden = false;
+    }
+
+    birthdayCakeButton.classList.remove("cake-celebration");
+
+    // Restart the bounce animation on every click.
+    void birthdayCakeButton.offsetWidth;
+
+    birthdayCakeButton.classList.add("cake-celebration");
+    launchFireworks(3500);
   });
 }
 
-/* Pause visual effects when the page is hidden. */
+function revealFinalSurprise() {
+  if (!finalSurprise) {
+    launchFireworks(5000);
+    return;
+  }
+
+  finalSurprise.hidden = false;
+  finalSurpriseRevealed = true;
+
+  launchFireworks(5000);
+
+  finalSurprise.scrollIntoView({
+    behavior: reducedMotion ? "auto" : "smooth",
+    block: "center"
+  });
+}
+
+function resetFinalSurprise() {
+  if (finalSurprise) {
+    finalSurprise.hidden = true;
+  }
+
+  finalSurpriseRevealed = false;
+}
+
+if (fireworksButton) {
+  fireworksButton.addEventListener("click", () => {
+    revealFinalSurprise();
+  });
+}
+
+if (finalReplayButton) {
+  finalReplayButton.addEventListener("click", () => {
+    closePhotoViewer();
+    resetFinalSurprise();
+    resetCakeWish();
+    resetTypewriter();
+    showScene(1);
+  });
+}
+
+/* =========================================================
+   PAGE VISIBILITY
+========================================================= */
+
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
     stopFireworks();
