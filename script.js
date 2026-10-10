@@ -1,398 +1,521 @@
 "use strict";
 
-/* ==================================
-   PERSONAL BIRTHDAY MESSAGE
-   Nee un message-ah inga direct-ah edit pannalaam.
-================================== */
+/* =========================================================
+   PERSONAL MESSAGE
+   Un birthday message-ai indha quotes-kulla paste pannalaam.
+   Example: const birthdayMessage = "Your own message here";
+========================================================= */
 
 const birthdayMessage = "WRITE YOUR PERSONAL BIRTHDAY MESSAGE HERE";
 
+/* =========================================================
+   HELPERS
+========================================================= */
 
-/* ==================================
+const $ = (selector, parent = document) => parent.querySelector(selector);
+const $$ = (selector, parent = document) =>
+  Array.from(parent.querySelectorAll(selector));
+
+const reducedMotion = window.matchMedia(
+  "(prefers-reduced-motion: reduce)"
+).matches;
+
+const scenes = $$(".scene");
+const progressBar = $("#progressBar");
+const heartsContainer = $("#hearts-container");
+const petalsContainer = $("#petals-container");
+const sparklesContainer = $("#sparkles-container");
+const catsContainer = $("#cats-container");
+
+let currentScene = 1;
+let previousFocusedElement = null;
+let lastDecorationTime = 0;
+
+/* =========================================================
    SCENE NAVIGATION
-================================== */
-
-const scenes = Array.from(document.querySelectorAll(".scene"));
-const progressBar = document.getElementById("progressBar");
+========================================================= */
 
 function showScene(sceneNumber) {
-  const index = sceneNumber - 1;
+  const index = Number(sceneNumber) - 1;
 
-  if (index < 0 || index >= scenes.length) return;
+  if (!Number.isInteger(index) || index < 0 || index >= scenes.length) {
+    return;
+  }
 
-  scenes.forEach((scene, i) => {
-    scene.classList.toggle("active", i === index);
+  currentScene = index + 1;
+
+  scenes.forEach((scene, sceneIndex) => {
+    scene.classList.toggle("active", sceneIndex === index);
+    scene.setAttribute(
+      "aria-hidden",
+      sceneIndex === index ? "false" : "true"
+    );
   });
 
-  progressBar.style.width =
-    `${((index + 1) / scenes.length) * 100}%`;
+  if (progressBar) {
+    progressBar.style.width =
+      `${((index + 1) / scenes.length) * 100}%`;
+  }
+
+  if (birthdayMessageDisplay) {
+    birthdayMessageDisplay.textContent = birthdayMessage;
+  }
 
   window.scrollTo({
     top: 0,
-    behavior: "smooth"
+    behavior: reducedMotion ? "auto" : "smooth"
   });
 
-  if (sceneNumber === 10) {
-    launchFireworks(1000);
+  if (index === 9) {
+    launchFireworks(1600);
+  } else {
+    stopFireworks();
   }
+
+  // Ask the browser to load photos in the current scene.
+  scenes[index].querySelectorAll("img[loading='lazy']").forEach((img) => {
+    img.loading = "eager";
+  });
 }
 
-document.querySelectorAll("[data-next]").forEach(button => {
+$$("[data-next]").forEach((button) => {
   button.addEventListener("click", () => {
     const nextScene = Number(button.dataset.next);
     showScene(nextScene);
   });
 });
 
-document.getElementById("restartButton").addEventListener("click", () => {
-  stopFireworks();
-  showScene(1);
-});
+const restartButton = $("#restartButton");
 
-document.getElementById("birthdayMessageDisplay").textContent =
-  birthdayMessage;
+if (restartButton) {
+  restartButton.addEventListener("click", () => {
+    closePhotoViewer();
+    showScene(1);
+  });
+}
 
+const birthdayMessageDisplay = $("#birthdayMessageDisplay");
 
-/* ==================================
-   BACKGROUND HEARTS
-================================== */
+if (birthdayMessageDisplay) {
+  birthdayMessageDisplay.textContent = birthdayMessage;
+}
 
-const heartsContainer = document.getElementById("hearts-container");
-const heartEmojis = ["💗", "💕", "💖", "💘", "❤️", "💞"];
+/* =========================================================
+   FLOATING DECORATIONS
+========================================================= */
+
+function addFloatingItem(container, className, symbol, options = {}) {
+  if (!container || reducedMotion) return;
+
+  const item = document.createElement("span");
+  item.className = className;
+  item.textContent = symbol;
+  item.setAttribute("aria-hidden", "true");
+
+  item.style.left = `${Math.random() * 96}%`;
+
+  if (options.top) {
+    item.style.top = `${Math.random() * 90}%`;
+  }
+
+  const duration = options.duration || 8;
+  item.style.animationDuration = `${duration}s`;
+  item.style.fontSize = `${options.size || 18}px`;
+
+  if (options.delay) {
+    item.style.animationDelay = `${options.delay}s`;
+  }
+
+  container.appendChild(item);
+
+  window.setTimeout(() => item.remove(), (duration + 1) * 1000);
+}
 
 function createHeart() {
-  const heart = document.createElement("span");
-  heart.className = "floating-heart-item";
-  heart.textContent =
-    heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
-
-  heart.style.left = `${Math.random() * 100}%`;
-  heart.style.fontSize = `${14 + Math.random() * 20}px`;
-  heart.style.animationDuration = `${8 + Math.random() * 9}s`;
-
-  heartsContainer.appendChild(heart);
-
-  heart.addEventListener("animationend", () => heart.remove(), {
-    once: true
-  });
+  addFloatingItem(
+    heartsContainer,
+    "floating-heart",
+    Math.random() > 0.5 ? "♡" : "♥",
+    {
+      duration: 7 + Math.random() * 5,
+      size: 12 + Math.random() * 20
+    }
+  );
 }
-
-setInterval(createHeart, 900);
-
-
-/* ==================================
-   GLOWING PARTICLES
-================================== */
-
-const particlesContainer = document.getElementById("particles");
-
-function createParticle() {
-  const particle = document.createElement("span");
-  particle.className = "particle";
-
-  particle.style.left = `${Math.random() * 100}%`;
-  particle.style.top = `${75 + Math.random() * 35}%`;
-  particle.style.animationDuration = `${7 + Math.random() * 8}s`;
-
-  particlesContainer.appendChild(particle);
-
-  particle.addEventListener("animationend", () => particle.remove(), {
-    once: true
-  });
-}
-
-setInterval(createParticle, 250);
-
-
-/* ==================================
-   FALLING ROSE PETALS
-================================== */
-
-const petalsContainer = document.getElementById("petals-container");
-const petalEmojis = ["🌸", "🌹", "🌷", "💮"];
 
 function createPetal() {
-  const petal = document.createElement("span");
-  petal.className = "rose-petal";
-  petal.textContent =
-    petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
+  const petals = ["❀", "✿", "❁", "♡"];
 
-  petal.style.left = `${Math.random() * 100}%`;
-  petal.style.fontSize = `${12 + Math.random() * 13}px`;
-  petal.style.animationDuration = `${8 + Math.random() * 8}s`;
-
-  petalsContainer.appendChild(petal);
-
-  petal.addEventListener("animationend", () => petal.remove(), {
-    once: true
-  });
+  addFloatingItem(
+    petalsContainer,
+    "floating-petal",
+    petals[Math.floor(Math.random() * petals.length)],
+    {
+      duration: 8 + Math.random() * 5,
+      size: 12 + Math.random() * 13
+    }
+  );
 }
-
-setInterval(createPetal, 1400);
-
-
-/* ==================================
-   SPARKLES
-================================== */
-
-const sparklesContainer = document.getElementById("sparkles-container");
 
 function createSparkle() {
-  const sparkle = document.createElement("span");
-  sparkle.className = "sparkle";
-  sparkle.textContent = "✦";
-
-  sparkle.style.left = `${Math.random() * 100}%`;
-  sparkle.style.top = `${Math.random() * 100}%`;
-  sparkle.style.color = Math.random() > 0.5 ? "#ffe0f0" : "#f5d49b";
-  sparkle.style.fontSize = `${8 + Math.random() * 13}px`;
-
-  sparklesContainer.appendChild(sparkle);
-
-  setTimeout(() => sparkle.remove(), 2500);
+  addFloatingItem(
+    sparklesContainer,
+    "floating-sparkle",
+    Math.random() > 0.5 ? "✦" : "✧",
+    {
+      top: true,
+      duration: 2 + Math.random() * 2,
+      size: 10 + Math.random() * 12
+    }
+  );
 }
 
-setInterval(createSparkle, 500);
+function createCat() {
+  if (!catsContainer || reducedMotion) return;
 
-
-/* ==================================
-   CUTE MOVING CATS
-================================== */
-
-const catsContainer = document.getElementById("cats-container");
-const catCharacters = ["🐈", "🐈‍⬛", "🐱", "😺", "😸"];
-
-function createMovingCat() {
   const cat = document.createElement("span");
   cat.className = "moving-cat";
-  cat.textContent =
-    catCharacters[Math.floor(Math.random() * catCharacters.length)];
-
-  cat.style.bottom = `${4 + Math.random() * 20}%`;
-  cat.style.animationDuration = `${15 + Math.random() * 10}s`;
+  cat.textContent = Math.random() > 0.5 ? "🐈" : "🐈‍⬛";
+  cat.setAttribute("aria-hidden", "true");
+  cat.style.animationDuration = `${15 + Math.random() * 8}s`;
 
   catsContainer.appendChild(cat);
 
-  cat.addEventListener("animationend", () => cat.remove(), {
-    once: true
-  });
+  window.setTimeout(() => cat.remove(), 25000);
 }
 
-for (let i = 0; i < 3; i++) {
-  setTimeout(createMovingCat, i * 3500);
+/* Limit background animation on small screens and hidden tabs. */
+const isSmallScreen = window.matchMedia("(max-width: 600px)").matches;
+
+if (!reducedMotion) {
+  window.setInterval(() => {
+    if (document.hidden) return;
+    createHeart();
+  }, isSmallScreen ? 1600 : 1000);
+
+  window.setInterval(() => {
+    if (document.hidden) return;
+    createPetal();
+  }, isSmallScreen ? 2500 : 1700);
+
+  window.setInterval(() => {
+    if (document.hidden) return;
+    createSparkle();
+  }, isSmallScreen ? 1200 : 750);
+
+  createCat();
+  window.setInterval(() => {
+    if (!document.hidden) createCat();
+  }, 12000);
 }
 
-setInterval(createMovingCat, 9000);
+/* =========================================================
+   MUSIC PLAYER
+========================================================= */
 
+const birthdaySong = $("#birthdaySong");
+const musicButton = $("#musicButton");
+const musicLabel = $("#musicLabel");
 
-/* ==================================
-   MUSIC PLAY / PAUSE
-================================== */
+let musicIsPlaying = false;
 
-const birthdaySong = document.getElementById("birthdaySong");
-const musicButton = document.getElementById("musicButton");
+function updateMusicButton(isPlaying) {
+  musicIsPlaying = isPlaying;
 
-musicButton.addEventListener("click", async () => {
-  if (birthdaySong.paused) {
-    try {
-      await birthdaySong.play();
-      musicButton.textContent = "♫ Pause Our Song";
-    } catch (error) {
-      musicButton.textContent = "Tap To Play Song";
-      console.error("Music could not be played:", error);
+  if (musicButton) {
+    musicButton.classList.toggle("is-playing", isPlaying);
+    musicButton.setAttribute("aria-pressed", String(isPlaying));
+    musicButton.setAttribute(
+      "aria-label",
+      isPlaying ? "Pause birthday music" : "Play birthday music"
+    );
+  }
+
+  if (musicLabel) {
+    musicLabel.textContent = isPlaying ? "Pause Music" : "Play Music";
+  }
+}
+
+if (birthdaySong && musicButton) {
+  birthdaySong.addEventListener("play", () => updateMusicButton(true));
+  birthdaySong.addEventListener("pause", () => updateMusicButton(false));
+  birthdaySong.addEventListener("ended", () => updateMusicButton(false));
+
+  musicButton.addEventListener("click", async () => {
+    if (birthdaySong.paused) {
+      try {
+        await birthdaySong.play();
+        updateMusicButton(true);
+      } catch (error) {
+        updateMusicButton(false);
+        console.warn(
+          "Music could not start. Check the music file path and format.",
+          error
+        );
+      }
+    } else {
+      birthdaySong.pause();
+      updateMusicButton(false);
     }
-  } else {
-    birthdaySong.pause();
-    musicButton.textContent = "♫ Play Our Song";
-  }
-});
+  });
 
-birthdaySong.addEventListener("ended", () => {
-  musicButton.textContent = "♫ Play Our Song";
-});
+  birthdaySong.addEventListener("error", () => {
+    updateMusicButton(false);
+    console.warn("Music file not found. Check music/Song.mp3.");
+  });
+}
 
-
-/* ==================================
+/* =========================================================
    PHOTO VIEWER
-================================== */
+========================================================= */
 
-const photoViewer = document.getElementById("photoViewer");
-const expandedPhoto = document.getElementById("expandedPhoto");
-const closePhotoViewer = document.getElementById("closePhotoViewer");
+const photoViewer = $("#photoViewer");
+const expandedPhoto = $("#expandedPhoto");
+const closePhotoViewerButton = $("#closePhotoViewer");
 
-document.querySelectorAll(".memory-photo").forEach(photo => {
-  photo.addEventListener("click", () => {
-    if (!photo.complete || photo.naturalWidth === 0) return;
+function openPhotoViewer(image) {
+  if (!photoViewer || !expandedPhoto || !image || !image.src) return;
 
-    expandedPhoto.src = photo.src;
-    expandedPhoto.alt = photo.alt;
-    photoViewer.classList.add("open");
-  });
+  previousFocusedElement = document.activeElement;
+  expandedPhoto.src = image.currentSrc || image.src;
+  expandedPhoto.alt = image.alt || "Expanded memory";
 
-  photo.addEventListener("error", () => {
-    console.warn(`Photo not found: ${photo.getAttribute("src")}`);
-  });
-});
+  photoViewer.classList.add("open");
+  photoViewer.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
 
-function closeViewer() {
+  if (closePhotoViewerButton) {
+    closePhotoViewerButton.focus();
+  }
+}
+
+function closePhotoViewer() {
+  if (!photoViewer) return;
+
   photoViewer.classList.remove("open");
-  expandedPhoto.src = "";
+  photoViewer.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+
+  if (expandedPhoto) {
+    expandedPhoto.removeAttribute("src");
+  }
+
+  if (
+    previousFocusedElement &&
+    typeof previousFocusedElement.focus === "function"
+  ) {
+    previousFocusedElement.focus();
+  }
 }
 
-closePhotoViewer.addEventListener("click", closeViewer);
+$$(".memory-photo").forEach((image) => {
+  image.addEventListener("click", () => {
+    if (image.complete && image.naturalWidth > 0) {
+      openPhotoViewer(image);
+    } else {
+      console.warn(`Photo is missing or could not load: ${image.src}`);
+    }
+  });
 
-photoViewer.addEventListener("click", event => {
-  if (event.target === photoViewer) {
-    closeViewer();
+  image.addEventListener("error", () => {
+    console.warn(`Please check this photo path: ${image.getAttribute("src")}`);
+  });
+});
+
+if (closePhotoViewerButton) {
+  closePhotoViewerButton.addEventListener("click", closePhotoViewer);
+}
+
+if (photoViewer) {
+  photoViewer.addEventListener("click", (event) => {
+    if (event.target === photoViewer) {
+      closePhotoViewer();
+    }
+  });
+}
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && photoViewer?.classList.contains("open")) {
+    closePhotoViewer();
   }
 });
 
-document.addEventListener("keydown", event => {
-  if (event.key === "Escape") {
-    closeViewer();
-  }
-});
-
-
-/* ==================================
+/* =========================================================
    FIREWORKS
-================================== */
+========================================================= */
 
-const canvas = document.getElementById("fireworksCanvas");
-const ctx = canvas.getContext("2d");
-const fireworksButton = document.getElementById("fireworksButton");
+const fireworksCanvas = $("#fireworksCanvas");
+const fireworksButton = $("#fireworksButton");
 
-let fireworks = [];
-let animationFrame = null;
-let fireworksUntil = 0;
+let fireworksContext = null;
+let fireworksParticles = [];
+let fireworksAnimationFrame = null;
+let fireworksStopTimer = null;
+let fireworksRunning = false;
+let lastFireworkTime = 0;
+let canvasWidth = 0;
+let canvasHeight = 0;
+let pixelRatio = 1;
 
-function resizeCanvas() {
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
-
-  canvas.width = Math.floor(window.innerWidth * dpr);
-  canvas.height = Math.floor(window.innerHeight * dpr);
-
-  canvas.style.width = `${window.innerWidth}px`;
-  canvas.style.height = `${window.innerHeight}px`;
-
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+if (fireworksCanvas) {
+  try {
+    fireworksContext = fireworksCanvas.getContext("2d");
+  } catch (error) {
+    console.warn("Canvas effects are unavailable.", error);
+  }
 }
 
-window.addEventListener("resize", resizeCanvas);
-resizeCanvas();
+function resizeFireworksCanvas() {
+  if (!fireworksCanvas || !fireworksContext) return;
+
+  pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+  canvasWidth = window.innerWidth;
+  canvasHeight = window.innerHeight;
+
+  fireworksCanvas.width = Math.round(canvasWidth * pixelRatio);
+  fireworksCanvas.height = Math.round(canvasHeight * pixelRatio);
+
+  fireworksCanvas.style.width = `${canvasWidth}px`;
+  fireworksCanvas.style.height = `${canvasHeight}px`;
+
+  fireworksContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+}
+
+window.addEventListener("resize", resizeFireworksCanvas);
+resizeFireworksCanvas();
 
 function createFirework(x, y) {
-  const colors = [
-    "#ff8ec7",
-    "#ffe6a7",
-    "#cba7ff",
-    "#ffffff",
-    "#ffb4d8"
-  ];
+  if (!fireworksContext) return;
 
-  const color = colors[Math.floor(Math.random() * colors.length)];
-  const count = 45 + Math.floor(Math.random() * 35);
+  const particleCount = 45;
+  const hue = Math.floor(Math.random() * 360);
 
-  for (let i = 0; i < count; i++) {
-    const angle = (Math.PI * 2 * i) / count;
-    const speed = 1 + Math.random() * 4;
+  for (let i = 0; i < particleCount; i++) {
+    const angle = (Math.PI * 2 * i) / particleCount;
+    const speed = 1.5 + Math.random() * 4;
 
-    fireworks.push({
+    fireworksParticles.push({
       x,
       y,
       vx: Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed,
       alpha: 1,
-      decay: 0.008 + Math.random() * 0.012,
-      color,
-      size: 1 + Math.random() * 2.2
+      decay: 0.012 + Math.random() * 0.014,
+      radius: 1.3 + Math.random() * 2,
+      hue: (hue + Math.random() * 40) % 360
     });
   }
 }
 
-function animateFireworks() {
-  ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+function drawFireworks(timestamp) {
+  if (!fireworksContext || !fireworksCanvas) {
+    stopFireworks();
+    return;
+  }
 
-  fireworks = fireworks.filter(particle => particle.alpha > 0.02);
+  if (!fireworksRunning) return;
 
-  fireworks.forEach(particle => {
+  fireworksContext.clearRect(0, 0, canvasWidth, canvasHeight);
+
+  if (
+    timestamp - lastFireworkTime > 350 &&
+    fireworksParticles.length < 400
+  ) {
+    createFirework(
+      canvasWidth * (0.15 + Math.random() * 0.7),
+      canvasHeight * (0.15 + Math.random() * 0.45)
+    );
+
+    lastFireworkTime = timestamp;
+  }
+
+  const remainingParticles = [];
+
+  for (const particle of fireworksParticles) {
     particle.x += particle.vx;
     particle.y += particle.vy;
-
-    particle.vx *= 0.99;
-    particle.vy *= 0.99;
     particle.vy += 0.025;
+    particle.vx *= 0.992;
+    particle.vy *= 0.992;
     particle.alpha -= particle.decay;
 
-    ctx.globalAlpha = Math.max(0, particle.alpha);
-    ctx.fillStyle = particle.color;
-    ctx.beginPath();
-    ctx.arc(
+    if (particle.alpha <= 0) continue;
+
+    fireworksContext.globalAlpha = particle.alpha;
+    fireworksContext.fillStyle = `hsl(${particle.hue} 90% 68%)`;
+    fireworksContext.beginPath();
+    fireworksContext.arc(
       particle.x,
       particle.y,
-      particle.size,
+      particle.radius,
       0,
       Math.PI * 2
     );
-    ctx.fill();
-  });
+    fireworksContext.fill();
 
-  ctx.globalAlpha = 1;
-
-  if (Date.now() < fireworksUntil) {
-    if (Math.random() < 0.08) {
-      createFirework(
-        60 + Math.random() * (window.innerWidth - 120),
-        70 + Math.random() * (window.innerHeight * 0.45)
-      );
-    }
+    remainingParticles.push(particle);
   }
 
-  if (Date.now() < fireworksUntil || fireworks.length > 0) {
-    animationFrame = requestAnimationFrame(animateFireworks);
-  } else {
-    animationFrame = null;
-    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-  }
+  fireworksContext.globalAlpha = 1;
+  fireworksParticles = remainingParticles;
+
+  fireworksAnimationFrame = requestAnimationFrame(drawFireworks);
 }
 
-function launchFireworks(duration = 5000) {
-  fireworksUntil = Math.max(fireworksUntil, Date.now() + duration);
+function launchFireworks(duration = 3000) {
+  if (reducedMotion || !fireworksContext) return;
 
-  createFirework(
-    window.innerWidth * 0.35,
-    window.innerHeight * 0.3
-  );
+  stopFireworks();
 
-  createFirework(
-    window.innerWidth * 0.7,
-    window.innerHeight * 0.25
-  );
+  fireworksRunning = true;
+  fireworksParticles = [];
+  lastFireworkTime = 0;
 
-  if (!animationFrame) {
-    animationFrame = requestAnimationFrame(animateFireworks);
-  }
+  createFirework(canvasWidth * 0.35, canvasHeight * 0.3);
+  createFirework(canvasWidth * 0.65, canvasHeight * 0.25);
+
+  fireworksAnimationFrame = requestAnimationFrame(drawFireworks);
+
+  fireworksStopTimer = window.setTimeout(() => {
+    stopFireworks();
+  }, Math.max(500, duration));
 }
 
 function stopFireworks() {
-  fireworksUntil = 0;
-  fireworks = [];
+  fireworksRunning = false;
 
-  if (animationFrame) {
-    cancelAnimationFrame(animationFrame);
-    animationFrame = null;
+  if (fireworksAnimationFrame !== null) {
+    cancelAnimationFrame(fireworksAnimationFrame);
+    fireworksAnimationFrame = null;
   }
 
-  ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+  if (fireworksStopTimer !== null) {
+    clearTimeout(fireworksStopTimer);
+    fireworksStopTimer = null;
+  }
+
+  fireworksParticles = [];
+
+  if (fireworksContext && fireworksCanvas) {
+    fireworksContext.clearRect(0, 0, canvasWidth, canvasHeight);
+  }
 }
 
-fireworksButton.addEventListener("click", () => {
-  launchFireworks(6000);
+if (fireworksButton) {
+  fireworksButton.addEventListener("click", () => {
+    launchFireworks(5000);
+  });
+}
+
+/* Pause visual effects when the page is hidden. */
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    stopFireworks();
+  }
 });
 
-
-/* ==================================
-   FIRST LOAD
-================================== */
+/* =========================================================
+   INITIALIZE
+========================================================= */
 
 showScene(1);
