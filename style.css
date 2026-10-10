@@ -15,6 +15,10 @@
   box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 html {
   min-height: 100%;
   scroll-behavior: smooth;
@@ -34,11 +38,13 @@ body {
   line-height: 1.8;
 }
 
-button {
+button,
+input {
   font: inherit;
 }
 
 button:focus-visible,
+input:focus-visible,
 img:focus-visible {
   outline: 3px solid var(--pink-dark);
   outline-offset: 5px;
@@ -114,21 +120,17 @@ img {
   position: absolute;
   z-index: 3;
   display: block;
-
-  /* Responsive size without disturbing the layout */
-width: clamp(110px, 15vw, 165px);
-max-width: 30%;
-max-height: 175px;
-
+  width: clamp(110px, 15vw, 165px);
+  height: auto;
+  max-width: 30%;
+  max-height: 175px;
   object-fit: contain;
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
-
   animation: stickerFloat 3.8s ease-in-out infinite;
 }
 
-/* Desktop positioning */
 .sticker-top-left {
   top: 110px;
   left: 12px;
@@ -149,12 +151,10 @@ max-height: 175px;
   right: 12px;
 }
 
-/* Subtle floating animation */
 @keyframes stickerFloat {
   0%, 100% {
     transform: translateY(0) rotate(-2deg);
   }
-
   50% {
     transform: translateY(-5px) rotate(2deg);
   }
@@ -515,10 +515,36 @@ h2 span {
   color: var(--pink-dark);
 }
 
+/* Interactive cake */
 .birthday-cake {
+  display: inline-block;
   margin: 10px 0 15px;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
   font-size: 4rem;
+  line-height: 1.3;
   animation: gentleFloat 3s ease-in-out infinite;
+}
+
+.birthday-cake:focus-visible {
+  outline: 3px solid var(--pink-dark);
+  outline-offset: 8px;
+  border-radius: 12px;
+}
+
+.birthday-cake.cake-celebration {
+  animation: cakeBounce 0.7s ease-in-out 2;
+}
+
+.cake-wish-message {
+  margin: 0 auto 18px;
+  color: var(--pink-dark);
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1.05rem, 3vw, 1.4rem);
+  animation: textReveal 0.5s ease both;
 }
 
 .birthday-title {
@@ -562,6 +588,17 @@ h2 span {
 
 .music-button.is-playing {
   animation: musicPulse 1.5s ease-in-out infinite;
+}
+
+#musicHeart {
+  display: inline-block;
+  color: var(--pink);
+  font-size: 1.25rem;
+  transform-origin: center;
+}
+
+.music-button.is-playing #musicHeart {
+  animation: musicHeartBeat 0.85s ease-in-out infinite;
 }
 
 /* Floating decorations */
@@ -646,9 +683,162 @@ h2 span {
   pointer-events: none;
 }
 
+/* Password gate */
+.site-lock {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  padding: 24px;
+  place-items: center;
+  overflow-y: auto;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.95), transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(255, 199, 222, 0.65), transparent 45%),
+    linear-gradient(135deg, #fff7f5, #ffe4ef 55%, #fff4f7);
+}
+
+.lock-card {
+  width: min(100%, 440px);
+  padding: clamp(24px, 6vw, 42px);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 22px 70px rgba(166, 62, 109, 0.18);
+  text-align: center;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.lock-heart {
+  margin-bottom: 12px;
+  color: var(--pink);
+  font-size: 4.5rem;
+  line-height: 1.2;
+  animation: heartBeat 1.8s ease-in-out infinite;
+}
+
+.lock-card h1 {
+  margin-bottom: 12px;
+  font-size: clamp(2.4rem, 8vw, 3.6rem);
+}
+
+.lock-card h1 span {
+  color: var(--pink);
+  font-family: "Great Vibes", cursive;
+  font-weight: 400;
+}
+
+.lock-card > p {
+  color: var(--muted);
+}
+
+.lock-card form {
+  display: grid;
+  gap: 12px;
+  margin-top: 25px;
+  text-align: left;
+}
+
+.lock-card label {
+  color: var(--rose);
+  font-size: 0.86rem;
+  font-weight: 500;
+}
+
+.lock-card input {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 16px;
+  border: 1px solid rgba(206, 91, 144, 0.3);
+  border-radius: 14px;
+  outline: none;
+  color: var(--text);
+  background: rgba(255, 250, 252, 0.95);
+}
+
+.lock-card input:focus {
+  border-color: var(--pink);
+  box-shadow: 0 0 0 3px rgba(233, 120, 168, 0.15);
+}
+
+.lock-card form .primary-button {
+  width: 100%;
+  margin: 4px 0 0;
+}
+
+.lock-error {
+  min-height: 24px;
+  margin: 0;
+  color: #b32650;
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+/* Typewriter letter */
+.typewriter-text.typing::after {
+  content: "▍";
+  display: inline-block;
+  margin-left: 2px;
+  color: var(--pink-dark);
+  animation: cursorBlink 0.7s steps(1) infinite;
+}
+
+/* Cinematic final surprise */
+.final-surprise {
+  position: relative;
+  margin: 35px auto 20px;
+  padding: clamp(25px, 6vw, 45px) clamp(20px, 5vw, 35px);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 232, 179, 0.48), transparent 45%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.97), rgba(255, 232, 241, 0.96));
+  box-shadow:
+    0 20px 70px rgba(166, 62, 109, 0.18),
+    0 0 35px rgba(255, 215, 140, 0.15);
+  animation: finalReveal 1s ease both;
+}
+
+.surprise-sparkles {
+  color: #c99b42;
+  font-size: 2rem;
+  letter-spacing: 14px;
+  animation: goldSparkle 2s ease-in-out infinite;
+}
+
+.surprise-heart {
+  margin: 10px auto;
+  font-size: clamp(4rem, 14vw, 6rem);
+  line-height: 1.2;
+  filter: drop-shadow(0 0 20px rgba(233, 120, 168, 0.4));
+  animation: heartBeat 1.4s ease-in-out infinite;
+}
+
+.surprise-eyebrow {
+  margin: 12px 0;
+  color: #a77b2c;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.final-surprise h2 {
+  margin-bottom: 15px;
+}
+
+.surprise-message {
+  max-width: 460px;
+  margin: 0 auto 15px;
+  color: var(--muted);
+}
+
+/* Accessibility notice */
 .noscript-message {
   position: fixed;
-  z-index: 200;
+  z-index: 2000;
   bottom: 10px;
   left: 10px;
   right: 10px;
@@ -711,8 +901,52 @@ h2 span {
 }
 
 @keyframes musicPulse {
-  0%, 100% { box-shadow: 0 5px 20px rgba(166, 62, 109, 0.1); }
-  50% { box-shadow: 0 5px 25px rgba(206, 91, 144, 0.3); }
+  0%, 100% {
+    box-shadow: 0 5px 20px rgba(166, 62, 109, 0.1);
+  }
+  50% {
+    box-shadow: 0 5px 25px rgba(206, 91, 144, 0.3);
+  }
+}
+
+@keyframes musicHeartBeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+}
+
+@keyframes cakeBounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  30% { transform: translateY(-16px) scale(1.08); }
+  60% { transform: translateY(0) scale(0.96); }
+}
+
+@keyframes cursorBlink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+@keyframes finalReveal {
+  from {
+    opacity: 0;
+    transform: translateY(25px) scale(0.96);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes goldSparkle {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
 }
 
 @keyframes floatUp {
@@ -757,13 +991,12 @@ h2 span {
     padding: 90px 18px 38px;
   }
 
-/* Small, responsive GIF stickers */
- .page-sticker {
-  width: clamp(80px, 22vw, 120px);
-  height: auto;
-  max-width: 30%;
-  max-height: 130px;
-}
+  .page-sticker {
+    width: clamp(80px, 22vw, 120px);
+    height: auto;
+    max-width: 30%;
+    max-height: 130px;
+  }
 
   .sticker-top-left,
   .sticker-top-right {
@@ -817,6 +1050,10 @@ h2 span {
     min-height: 38px;
     padding: 7px 12px;
   }
+
+  .lock-card {
+    padding: 26px 22px;
+  }
 }
 
 @media (max-width: 380px) {
@@ -845,9 +1082,13 @@ h2 span {
     height: 70px;
     font-size: 2.8rem;
   }
+
+  .surprise-sparkles {
+    letter-spacing: 8px;
+  }
 }
 
-/* Respect the visitor's motion preferences */
+/* Respect reduced-motion preferences */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -857,4 +1098,4 @@ h2 span {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  }
+                             }
