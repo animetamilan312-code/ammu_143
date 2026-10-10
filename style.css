@@ -116,18 +116,23 @@ img {
 }
 
 /* Page-specific GIF stickers */
+/* Small GIF stickers — keep text clearly visible */
 .page-sticker {
   position: absolute;
-  z-index: 3;
+  z-index: 1;
   display: block;
-  width: clamp(110px, 15vw, 165px);
+
+  width: clamp(65px, 9vw, 100px);
   height: auto;
-  max-width: 30%;
-  max-height: 175px;
+  max-width: 22%;
+  max-height: 105px;
+
   object-fit: contain;
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
+
+  opacity: 0.9;
   animation: stickerFloat 3.8s ease-in-out infinite;
 }
 
@@ -991,11 +996,12 @@ h2 span {
     padding: 90px 18px 38px;
   }
 
+  /* Smaller GIF stickers on phones */
   .page-sticker {
-    width: clamp(80px, 22vw, 120px);
+    width: clamp(55px, 16vw, 78px);
     height: auto;
-    max-width: 30%;
-    max-height: 130px;
+    max-width: 20%;
+    max-height: 80px;
   }
 
   .sticker-top-left,
@@ -1098,4 +1104,14 @@ h2 span {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-                             }
+}
+
+/* Keep website content above decorative GIF stickers */
+.content {
+  position: relative;
+  z-index: 4;
+}
+
+.page-sticker {
+  z-index: 1;
+             }
