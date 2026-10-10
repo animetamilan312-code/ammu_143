@@ -25,7 +25,6 @@ const progressBar = $("#progressBar");
 const heartsContainer = $("#hearts-container");
 const petalsContainer = $("#petals-container");
 const sparklesContainer = $("#sparkles-container");
-const catsContainer = $("#cats-container");
 
 let currentScene = 1;
 let previousFocusedElement = null;
@@ -170,20 +169,6 @@ function createSparkle() {
   );
 }
 
-function createCat() {
-  if (!catsContainer || reducedMotion) return;
-
-  const cat = document.createElement("span");
-  cat.className = "moving-cat";
-  cat.textContent = Math.random() > 0.5 ? "🐈" : "🐈‍⬛";
-  cat.setAttribute("aria-hidden", "true");
-  cat.style.animationDuration = `${15 + Math.random() * 8}s`;
-
-  catsContainer.appendChild(cat);
-
-  window.setTimeout(() => cat.remove(), 25000);
-}
-
 /* Limit background animation on small screens and hidden tabs. */
 const isSmallScreen = window.matchMedia("(max-width: 600px)").matches;
 
@@ -202,11 +187,6 @@ if (!reducedMotion) {
     if (document.hidden) return;
     createSparkle();
   }, isSmallScreen ? 1200 : 750);
-
-  createCat();
-  window.setInterval(() => {
-    if (!document.hidden) createCat();
-  }, 12000);
 }
 
 /* =========================================================
