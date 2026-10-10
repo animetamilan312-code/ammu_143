@@ -996,33 +996,36 @@ h2 span {
     padding: 90px 18px 38px;
   }
 
-  /* Smaller GIF stickers on phones */
-  .page-sticker {
-    width: clamp(55px, 16vw, 78px);
-    height: auto;
-    max-width: 20%;
-    max-height: 80px;
-  }
+/* Smaller GIF stickers on mobile */
+.page-sticker {
+  width: clamp(38px, 10vw, 52px);
+  height: auto;
+  max-width: 14%;
+  max-height: 55px;
+  opacity: 0.8;
+  z-index: 1;
+}
 
-  .sticker-top-left,
-  .sticker-top-right {
-    top: 78px;
-  }
+/* Keep stickers away from the main text */
+.sticker-top-left {
+  top: 82px;
+  left: 5px;
+}
 
-  .sticker-bottom-left,
-  .sticker-bottom-right {
-    bottom: 8px;
-  }
+.sticker-top-right {
+  top: 82px;
+  right: 5px;
+}
 
-  .sticker-top-left,
-  .sticker-bottom-left {
-    left: 8px;
-  }
+.sticker-bottom-left {
+  bottom: 5px;
+  left: 5px;
+}
 
-  .sticker-top-right,
-  .sticker-bottom-right {
-    right: 8px;
-  }
+.sticker-bottom-right {
+  bottom: 5px;
+  right: 5px;
+}
 
   .gallery {
     grid-template-columns: 1fr;
@@ -1114,4 +1117,4 @@ h2 span {
 
 .page-sticker {
   z-index: 1;
-             }
+    }
