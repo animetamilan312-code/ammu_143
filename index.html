@@ -16,6 +16,31 @@
 </head>
 
 <body>
+  <!-- SECRET PASSWORD SCREEN -->
+  <div id="siteLock" class="site-lock">
+    <div class="lock-card">
+      <div class="lock-heart" aria-hidden="true">♡</div>
+      <span class="eyebrow">A little surprise for someone special</span>
+      <h1>For <span>Ammu</span> ❤️</h1>
+      <p>This little world is just for you.</p>
+
+      <form id="unlockForm">
+        <label for="unlockPassword">Enter your secret password</label>
+        <input
+          id="unlockPassword"
+          type="password"
+          placeholder="Your secret password"
+          autocomplete="off"
+          required
+        >
+        <button class="primary-button" type="submit">
+          Unlock My Surprise ♡
+        </button>
+        <p id="lockError" class="lock-error" role="alert"></p>
+      </form>
+    </div>
+  </div>
+
   <!-- Decorative backgrounds -->
   <div class="background-glow" aria-hidden="true"></div>
   <div id="hearts-container" aria-hidden="true"></div>
@@ -32,9 +57,15 @@
     <source src="music/Song.mp3" type="audio/mpeg">
   </audio>
 
-  <button id="musicButton" class="music-button" type="button"
-          aria-label="Play birthday music" aria-pressed="false">
+  <button
+    id="musicButton"
+    class="music-button"
+    type="button"
+    aria-label="Play birthday music"
+    aria-pressed="false"
+  >
     ♫ <span id="musicLabel">Play Music</span>
+    <span id="musicHeart" aria-hidden="true">♡</span>
   </button>
 
   <main class="story">
@@ -64,12 +95,8 @@
 
     <!-- SCENE 2 -->
     <section class="scene" id="scene2">
-      <img
-        class="page-sticker sticker-top-right"
-        src="unyel.gif"
-        alt=""
-        aria-hidden="true"
-      >
+      <img class="page-sticker sticker-top-right"
+           src="unyel.gif" alt="" aria-hidden="true">
 
       <div class="content">
         <span class="eyebrow">Every story starts somewhere</span>
@@ -87,7 +114,9 @@
           </p>
         </article>
 
-        <p class="highlight-text">Sometimes, the smallest beginning leads to the sweetest story.</p>
+        <p class="highlight-text">
+          Sometimes, the smallest beginning leads to the sweetest story.
+        </p>
 
         <button class="primary-button" type="button" data-next="3">
           Continue Our Story →
@@ -99,6 +128,7 @@
     <section class="scene" id="scene3">
       <div class="content">
         <span class="eyebrow">A date I'll always remember</span>
+
         <div class="calendar-card">
           <span class="calendar-month">JUNE</span>
           <strong class="calendar-day">22</strong>
@@ -120,25 +150,20 @@
 
     <!-- SCENE 4 -->
     <section class="scene" id="scene4">
-      <img
-        class="page-sticker sticker-top-left"
-        src="BearBounce.gif"
-        alt=""
-        aria-hidden="true"
-      >
+      <img class="page-sticker sticker-top-left"
+           src="BearBounce.gif" alt="" aria-hidden="true">
 
       <div class="content">
         <span class="eyebrow">One of my favourite memories</span>
         <h2>The First <span>Time We Met</span></h2>
 
         <figure class="photo-frame featured-photo">
-          <img
-            src="images/first-meet.jpg"
-            alt="Our first meeting memory"
-            class="memory-photo"
-            loading="lazy"
-          >
-          <figcaption>A memory I'll always keep close to my heart ♡</figcaption>
+          <img src="images/first-meet.jpg"
+               alt="Our first meeting memory"
+               class="memory-photo" loading="lazy">
+          <figcaption>
+            A memory I'll always keep close to my heart ♡
+          </figcaption>
         </figure>
 
         <p class="subtitle">
@@ -185,19 +210,17 @@
 
     <!-- SCENE 6 -->
     <section class="scene" id="scene6">
-      <img
-        class="page-sticker sticker-bottom-left"
-        src="Bubu3.gif"
-        alt=""
-        aria-hidden="true"
-      >
+      <img class="page-sticker sticker-bottom-left"
+           src="Bubu3.gif" alt="" aria-hidden="true">
 
       <div class="content">
         <span class="eyebrow">Even when we're far apart</span>
         <h2>Distance Can't Change <span>Everything</span></h2>
 
         <div class="distance-illustration" aria-hidden="true">
-          <span>♡</span><span class="dotted-line">··········</span><span>♡</span>
+          <span>♡</span>
+          <span class="dotted-line">··········</span>
+          <span>♡</span>
         </div>
 
         <article class="message-card">
@@ -212,7 +235,9 @@
           </p>
         </article>
 
-        <p class="highlight-text">Until then, I'll keep caring from wherever I am. ♡</p>
+        <p class="highlight-text">
+          Until then, I'll keep caring from wherever I am. ♡
+        </p>
 
         <button class="primary-button" type="button" data-next="7">
           Our Future →
@@ -222,12 +247,8 @@
 
     <!-- SCENE 7 -->
     <section class="scene" id="scene7">
-      <img
-        class="page-sticker sticker-top-left"
-        src="bearcuddle.gif"
-        alt=""
-        aria-hidden="true"
-      >
+      <img class="page-sticker sticker-top-left"
+           src="bearcuddle.gif" alt="" aria-hidden="true">
 
       <div class="content">
         <span class="eyebrow">A little dream for the future</span>
@@ -244,7 +265,9 @@
             other, sharing daily hugs, supporting each other through
             hard times, and making more beautiful memories.
           </p>
-          <p class="promise-ending">One day at a time, with love and care. ♡</p>
+          <p class="promise-ending">
+            One day at a time, with love and care. ♡
+          </p>
         </article>
 
         <button class="primary-button" type="button" data-next="8">
@@ -263,19 +286,22 @@
         <div class="gallery">
           <figure class="photo-frame gallery-frame">
             <img src="images/memory-1.jpg"
-                 alt="Memory one" class="memory-photo" loading="lazy">
+                 alt="Memory one"
+                 class="memory-photo" loading="lazy">
             <figcaption>Memory No. 1 ♡</figcaption>
           </figure>
 
           <figure class="photo-frame gallery-frame">
             <img src="images/memory-2.jpg"
-                 alt="Memory two" class="memory-photo" loading="lazy">
+                 alt="Memory two"
+                 class="memory-photo" loading="lazy">
             <figcaption>Memory No. 2 ♡</figcaption>
           </figure>
 
           <figure class="photo-frame gallery-frame">
             <img src="images/memory-3.jpg"
-                 alt="Memory three" class="memory-photo" loading="lazy">
+                 alt="Memory three"
+                 class="memory-photo" loading="lazy">
             <figcaption>Memory No. 3 ♡</figcaption>
           </figure>
         </div>
@@ -288,12 +314,8 @@
 
     <!-- SCENE 9 -->
     <section class="scene" id="scene9">
-      <img
-        class="page-sticker sticker-bottom-right"
-        src="DanceDance.gif"
-        alt=""
-        aria-hidden="true"
-      >
+      <img class="page-sticker sticker-bottom-right"
+           src="DanceDance.gif" alt="" aria-hidden="true">
 
       <div class="content">
         <span class="eyebrow">From my heart to yours</span>
@@ -303,13 +325,13 @@
           <div class="letter-decoration">♡</div>
           <p class="letter-greeting">My Ammu,</p>
 
-          <p>
+          <p class="typewriter-text">
             No matter how many memories we make, there will always be
             more things I want to tell you and more moments I hope
             we get to share.
           </p>
 
-          <p>
+          <p class="typewriter-text">
             Thank you for being part of my story. I hope we continue
             learning, growing, laughing, and caring for each other.
           </p>
@@ -325,29 +347,34 @@
 
     <!-- SCENE 10 -->
     <section class="scene" id="scene10">
-      <img
-        class="page-sticker sticker-bottom-left"
-        src="Bubu4.gif"
-        alt=""
-        aria-hidden="true"
-      >
+      <img class="page-sticker sticker-bottom-left"
+           src="Bubu4.gif" alt="" aria-hidden="true">
 
       <div class="content">
         <span class="eyebrow">Today is your special day</span>
-        <div class="birthday-cake" aria-hidden="true">🎂</div>
+
+        <button
+          id="birthdayCakeButton"
+          class="birthday-cake"
+          type="button"
+          aria-label="Tap the birthday cake to make a wish"
+        >🎂</button>
+
+        <p id="cakeWishMessage" class="cake-wish-message" hidden>
+          Close your eyes, make a wish, Ammu! ✨💗
+        </p>
 
         <h1 class="hero-title birthday-title">
           Happy Birthday <span>Ammu!</span>
         </h1>
 
         <figure class="photo-frame featured-photo final-photo">
-          <img
-            src="images/favourite-photo.jpg"
-            alt="My favourite photo of Ammu"
-            class="memory-photo"
-            loading="lazy"
-          >
-          <figcaption>My favourite person, my favourite smile ♡</figcaption>
+          <img src="images/favourite-photo.jpg"
+               alt="My favourite photo of Ammu"
+               class="memory-photo" loading="lazy">
+          <figcaption>
+            My favourite person, my favourite smile ♡
+          </figcaption>
         </figure>
 
         <article class="birthday-message-card">
@@ -364,6 +391,21 @@
           ↺ Relive Our Story
         </button>
 
+        <!-- CINEMATIC FINAL SURPRISE -->
+        <div id="finalSurprise" class="final-surprise" hidden>
+          <div class="surprise-sparkles" aria-hidden="true">✦ ✧ ✦</div>
+          <div class="surprise-heart" aria-hidden="true">💖</div>
+          <p class="surprise-eyebrow">A wish from my heart</p>
+          <h2>Happy Birthday, <span>Ammu!</span></h2>
+          <p class="surprise-message">
+            You make my memories more beautiful.
+            May your special day be filled with happiness, love, and smiles. ♡
+          </p>
+          <button id="finalReplayButton" class="primary-button" type="button">
+            Relive Our Story ↺
+          </button>
+        </div>
+
         <p class="final-note">Made with love, just for you. ♡</p>
       </div>
     </section>
@@ -373,11 +415,16 @@
   <canvas id="fireworksCanvas" aria-hidden="true"></canvas>
 
   <!-- Photo viewer -->
-  <div id="photoViewer" class="photo-viewer"
-       role="dialog" aria-modal="true"
-       aria-label="Expanded photo viewer" aria-hidden="true">
-    <button id="closePhotoViewer" class="close-viewer"
-            type="button" aria-label="Close photo viewer">×</button>
+  <div id="photoViewer"
+       class="photo-viewer"
+       role="dialog"
+       aria-modal="true"
+       aria-label="Expanded photo viewer"
+       aria-hidden="true">
+    <button id="closePhotoViewer"
+            class="close-viewer"
+            type="button"
+            aria-label="Close photo viewer">×</button>
     <img id="expandedPhoto" src="" alt="Expanded memory">
   </div>
 
