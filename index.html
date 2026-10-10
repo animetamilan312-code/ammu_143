@@ -1,1349 +1,362 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10051f">
 
-<title>For My Favourite Person ❤️</title>
+  <title>For Ammu ❤️ | A Special Birthday</title>
 
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-:root {
-    --pink: #ff7eb3;
-    --rose: #ff4d8d;
-    --gold: #ffdca8;
-    --white: #fff7fc;
-    --glass: rgba(255,255,255,0.08);
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    min-height: 100vh;
-    background: #080819;
-    color: var(--white);
-    font-family: Georgia, "Times New Roman", serif;
-    overflow-x: hidden;
-}
-
-/* ANIMATED BACKGROUND */
-
-#stars,
-#particles,
-#hearts,
-#roses,
-#sparkles {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-#stars {
-    z-index: 0;
-    background:
-        radial-gradient(ellipse at top, #29204b 0%, transparent 55%),
-        linear-gradient(180deg, #080819, #190c29, #080819);
-}
-
-.star {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background: white;
-    border-radius: 50%;
-    animation: twinkle 2s infinite alternate;
-}
-
-@keyframes twinkle {
-    from { opacity: .2; transform: scale(.7); }
-    to { opacity: 1; transform: scale(1.5); }
-}
-
-.particle {
-    position: absolute;
-    bottom: -20px;
-    width: 4px;
-    height: 4px;
-    background: #ff9ac7;
-    border-radius: 50%;
-    box-shadow: 0 0 12px #ff65a5;
-    animation: rise linear infinite;
-}
-
-@keyframes rise {
-    from {
-        transform: translateY(0);
-        opacity: 0;
-    }
-    15% { opacity: .8; }
-    to {
-        transform: translateY(-110vh);
-        opacity: 0;
-    }
-}
-
-.floating-heart,
-.rose,
-.sparkle {
-    position: absolute;
-    pointer-events: none;
-    user-select: none;
-}
-
-.floating-heart {
-    bottom: -40px;
-    animation: heartRise linear forwards;
-}
-
-@keyframes heartRise {
-    to {
-        transform: translateY(-110vh) rotate(30deg);
-        opacity: 0;
-    }
-}
-
-.rose {
-    top: -40px;
-    animation: roseFall linear forwards;
-}
-
-@keyframes roseFall {
-    to {
-        transform: translateY(110vh) rotate(360deg);
-        opacity: .2;
-    }
-}
-
-.sparkle {
-    animation: sparkleFade 1.5s ease-out forwards;
-}
-
-@keyframes sparkleFade {
-    0% {
-        opacity: 0;
-        transform: scale(.2);
-    }
-    50% { opacity: 1; }
-    100% {
-        opacity: 0;
-        transform: scale(1.8);
-    }
-}
-
-/* WALKING CATS */
-
-#cats {
-    position: fixed;
-    bottom: 5px;
-    left: 0;
-    width: 100%;
-    height: 55px;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 8;
-}
-
-.cat {
-    position: absolute;
-    left: -70px;
-    bottom: 0;
-    font-size: 34px;
-    animation: catWalk 18s linear forwards;
-}
-
-@keyframes catWalk {
-    from { left: -70px; }
-    to { left: 110%; }
-}
-
-/* MUSIC BUTTON */
-
-#musicButton {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    z-index: 20;
-    background: rgba(255, 126, 179, .15);
-    color: white;
-    border: 1px solid rgba(255,255,255,.3);
-    padding: 11px 15px;
-    border-radius: 30px;
-    backdrop-filter: blur(12px);
-    cursor: pointer;
-}
-
-/* MAIN CONTENT */
-
-main {
-    position: relative;
-    z-index: 2;
-}
-
-.scene {
-    display: none;
-    min-height: 100vh;
-    padding: 85px 20px 100px;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    flex-direction: column;
-    animation: sceneIn .9s ease;
-}
-
-.scene.active {
-    display: flex;
-}
-
-@keyframes sceneIn {
-    from {
-        opacity: 0;
-        transform: translateY(18px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.content {
-    width: 100%;
-    max-width: 760px;
-    margin: auto;
-}
-
-.eyebrow {
-    color: var(--gold);
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    font-family: Arial, sans-serif;
-    font-size: 11px;
-    margin-bottom: 20px;
-}
-
-h1 {
-    font-size: clamp(36px, 8vw, 70px);
-    line-height: 1.12;
-    margin-bottom: 22px;
-    background: linear-gradient(120deg, #fff, #ffb6d5, #ffe7b9);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    text-shadow: 0 0 25px rgba(255,126,179,.08);
-}
-
-h2 {
-    color: #ffc1dc;
-    font-size: clamp(27px, 6vw, 43px);
-    margin-bottom: 22px;
-}
-
-p {
-    color: #e8dce9;
-    font-size: clamp(16px, 3.8vw, 19px);
-    line-height: 1.9;
-    margin: 12px 0;
-}
-
-.highlight {
-    color: var(--gold);
-}
-
-.heart-icon {
-    font-size: 65px;
-    margin: 10px 0 25px;
-    filter: drop-shadow(0 0 22px rgba(255,77,141,.5));
-    animation: heartbeat 1.6s infinite;
-}
-
-@keyframes heartbeat {
-    0%, 100% { transform: scale(1); }
-    12% { transform: scale(1.13); }
-    24% { transform: scale(1); }
-    36% { transform: scale(1.08); }
-}
-
-/* GLASS CARD */
-
-.card {
-    background: var(--glass);
-    border: 1px solid rgba(255,255,255,.13);
-    border-radius: 24px;
-    padding: 25px;
-    margin: 24px auto;
-    box-shadow: 0 15px 50px rgba(0,0,0,.15);
-    backdrop-filter: blur(14px);
-}
-
-.date {
-    display: inline-block;
-    margin: 15px 0;
-    padding: 12px 22px;
-    color: var(--gold);
-    border: 1px solid rgba(255,220,168,.5);
-    border-radius: 30px;
-    letter-spacing: 2px;
-}
-
-/* PHOTO CARDS */
-
-.photo-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-    margin: 25px 0;
-}
-
-.photo-card {
-    background: rgba(255,255,255,.07);
-    border: 1px solid rgba(255,255,255,.12);
-    padding: 10px;
-    border-radius: 18px;
-}
-
-.photo-card img {
-    display: block;
-    width: 100%;
-    aspect-ratio: 3 / 4;
-    object-fit: cover;
-    border-radius: 12px;
-    background: #24162c;
-    cursor: pointer;
-    transition: transform .3s;
-}
-
-.photo-card img:hover {
-    transform: scale(1.025);
-}
-
-.photo-card p {
-    font-size: 14px;
-    margin: 10px 0 2px;
-}
-
-/* BUTTONS */
-
-.buttons {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 30px;
-}
-
-.btn {
-    display: inline-block;
-    padding: 13px 23px;
-    border: 1px solid rgba(255,255,255,.25);
-    border-radius: 30px;
-    background: rgba(255,255,255,.07);
-    color: white;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    cursor: pointer;
-    transition: .25s;
-}
-
-.btn.primary {
-    background: linear-gradient(135deg, #ff4d8d, #b94dff);
-    border: none;
-    box-shadow: 0 7px 25px rgba(255,77,141,.25);
-}
-
-.btn:hover {
-    transform: translateY(-3px);
-    filter: brightness(1.15);
-}
-
-/* LETTER */
-
-.letter {
-    text-align: left;
-    white-space: pre-line;
-    color: #f8eaf3;
-    line-height: 2;
-    font-size: 17px;
-}
-
-/* FINAL SURPRISE */
-
-#fireworks {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 10;
-}
-
-#surpriseMessage {
-    display: none;
-}
-
-#surpriseMessage.show {
-    display: block;
-    animation: sceneIn 1.5s ease;
-}
-
-/* MOBILE */
-
-@media (max-width: 480px) {
-    .scene {
-        padding: 80px 17px 95px;
-    }
-
-    .card {
-        padding: 20px 16px;
-    }
-
-    .photo-grid {
-        gap: 10px;
-    }
-
-    .photo-card {
-        padding: 7px;
-    }
-
-    .photo-card p {
-        font-size: 12px;
-    }
-
-    .btn {
-        padding: 12px 17px;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-        scroll-behavior: auto !important;
-    }
-}
-</style>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- ANIMATED BACKGROUNDS -->
+  <!-- Animated Background -->
+  <div id="stars"></div>
+  <div id="particles"></div>
+  <div id="hearts-container"></div>
+  <div id="petals-container"></div>
+  <div id="sparkles-container"></div>
+  <div id="cats-container"></div>
 
-<div id="stars"></div>
-<div id="particles"></div>
-<div id="hearts"></div>
-<div id="roses"></div>
-<div id="sparkles"></div>
-<div id="cats"></div>
+  <!-- Music -->
+  <audio id="birthdaySong" loop preload="none">
+    <source src="music/Song.mp3" type="audio/mpeg">
+  </audio>
 
-<canvas id="fireworks"></canvas>
+  <button id="musicButton" class="music-button" type="button">
+    ♫ Play Our Song
+  </button>
 
-<!-- MUSIC -->
+  <!-- Progress -->
+  <div class="progress-container">
+    <div id="progressBar"></div>
+  </div>
 
-<audio id="music" loop preload="none">
-    <source src="music/song-1.mp3" type="audio/mpeg">
-</audio>
+  <!-- Scene 1: Opening -->
+  <section class="scene active" id="scene1">
+    <div class="scene-content">
+      <p class="eyebrow">A LITTLE SURPRISE FOR</p>
+      <h1 class="glow-title">My Ammu <span>❤️</span></h1>
+      <p class="subtitle">A story written by fate, held together by love.</p>
+      <div class="big-heart">💗</div>
+      <button class="next-button" data-next="2">
+        Open Your Surprise ✨
+      </button>
+    </div>
+  </section>
 
-<button id="musicButton" onclick="toggleMusic()">
-    🎵 Play Music
-</button>
+  <!-- Scene 2: Our Beginning -->
+  <section class="scene" id="scene2">
+    <div class="scene-content">
+      <p class="eyebrow">CHAPTER 01</p>
+      <h2>Where Our Story Began 💌</h2>
 
-<main>
+      <div class="story-card">
+        <div class="story-icon">📱</div>
+        <p>
+          Who knew a simple conversation on Telegram
+          would become such a special part of my life?
+        </p>
+        <p>
+          We started talking about dubbing, shared our
+          thoughts, and slowly built a bond filled with trust.
+        </p>
+        <p class="highlight">A small conversation. A beautiful beginning. ❤️</p>
+      </div>
 
-<!-- SCENE 1: OPENING -->
+      <button class="next-button" data-next="3">Continue Our Story →</button>
+    </div>
+  </section>
 
-<section class="scene active" id="scene0">
-    <div class="content">
+  <!-- Scene 3: Special Date -->
+  <section class="scene" id="scene3">
+    <div class="scene-content">
+      <p class="eyebrow">CHAPTER 02</p>
+      <h2>The Day We Became Special 💞</h2>
 
-        <div class="eyebrow">A little world made for you</div>
+      <div class="date-card">
+        <span class="date-icon">🗓️</span>
+        <h3>22 June 2025</h3>
+        <p>
+          A date that became a beautiful chapter
+          in our story — one I will always remember.
+        </p>
+      </div>
 
-        <div class="heart-icon">❤️</div>
+      <div class="floating-heart">💕</div>
 
-        <h1>Happy Birthday,<br>My Favourite Person</h1>
+      <button class="next-button" data-next="4">One More Memory →</button>
+    </div>
+  </section>
+
+  <!-- Scene 4: First Meet -->
+  <section class="scene" id="scene4">
+    <div class="scene-content">
+      <p class="eyebrow">CHAPTER 03</p>
+      <h2>Our First Meet 🥹❤️</h2>
+
+      <div class="photo-frame">
+        <img
+          src="images/first-meet.jpg"
+          alt="Our first meet"
+          class="memory-photo"
+          loading="lazy"
+        >
+      </div>
+
+      <p class="photo-caption">
+        The first time I saw you in person —
+        a memory that will always stay with me.
+      </p>
+
+      <button class="next-button" data-next="5">Keep Going 💗</button>
+    </div>
+  </section>
+
+  <!-- Scene 5: Why Ammu Is Special -->
+  <section class="scene" id="scene5">
+    <div class="scene-content">
+      <p class="eyebrow">CHAPTER 04</p>
+      <h2>Why You Are So Special 🌷</h2>
+
+      <div class="story-card">
+        <div class="story-icon">🥰</div>
 
         <p>
-            Out of all the people in this world,
-            somehow my heart found you.
+          To me, you are beautiful in your own way.
+          Your smile, your innocent little moments,
+          and the person you are mean so much to me.
+        </p>
+
+        <p>
+          I don't want to count your flaws.
+          I want to appreciate all the little things
+          that make you, you.
+        </p>
+
+        <p class="highlight">You are special simply because you are Ammu. ❤️</p>
+      </div>
+
+      <button class="next-button" data-next="6">A Little More From My Heart →</button>
+    </div>
+  </section>
+
+  <!-- Scene 6: Long Distance -->
+  <section class="scene" id="scene6">
+    <div class="scene-content">
+      <p class="eyebrow">CHAPTER 05</p>
+      <h2>Even Across The Distance 🌙</h2>
+
+      <div class="story-card">
+        <div class="story-icon">🌌</div>
+
+        <p>
+          Some days, I wish I could be right beside you —
+          especially when you are struggling and need comfort.
+        </p>
+
+        <p>
+          Until I can be there in person, your photos
+          bring back memories and remind me how much
+          our moments mean to me.
         </p>
 
         <p class="highlight">
-            And my favourite story is the one that began with us.
+          Distance may keep us apart for now,
+          but you remain close to my heart. 💗
         </p>
+      </div>
 
-        <div class="buttons">
-            <button class="btn primary" onclick="nextScene()">
-                Open Your Surprise 💌
-            </button>
-        </div>
-
+      <button class="next-button" data-next="7">My Promise To You 💍</button>
     </div>
-</section>
+  </section>
 
+  <!-- Scene 7: Future Promise -->
+  <section class="scene" id="scene7">
+    <div class="scene-content">
+      <p class="eyebrow">CHAPTER 06</p>
+      <h2>My Promise, Ammu 💍</h2>
 
-<!-- SCENE 2: HOW WE MET -->
-
-<section class="scene" id="scene1">
-    <div class="content">
-
-        <div class="eyebrow">Chapter One</div>
-
-        <h2>How Our Story Began ✨</h2>
-
-        <div class="card">
-            <p>
-                Who knew that a simple conversation in a Telegram group
-                could become such a special part of my life?
-            </p>
-
-            <p>
-                You came to me to learn about dubbing.
-                We started talking about dubbing,
-                and slowly our conversations became something
-                more meaningful.
-            </p>
-
-            <p class="highlight">
-                Sometimes, the most beautiful stories begin
-                in the most unexpected ways. ❤️
-            </p>
-        </div>
+      <div class="story-card">
+        <div class="story-icon">🤍</div>
 
         <p>
-            From a simple conversation to a story close to my heart.
+          I dream of a future where we can be together,
+          care for each other, and face life's challenges
+          as a team.
         </p>
-
-        <div class="buttons">
-            <button class="btn" onclick="prevScene()">← Previous</button>
-            <button class="btn primary" onclick="nextScene()">Continue →</button>
-        </div>
-
-    </div>
-</section>
-
-
-<!-- SCENE 3: OUR BEGINNING -->
-
-<section class="scene" id="scene2">
-    <div class="content">
-
-        <div class="eyebrow">The day our story began</div>
-
-        <h2>June 22, 2025 💍</h2>
-
-        <div class="heart-icon">💗</div>
-
-        <div class="card">
-            <p>
-                Some dates are just dates to the world.
-                But some dates become memories that stay
-                close to our hearts.
-            </p>
-
-            <div class="date">22 · 06 · 2025</div>
-
-            <p>
-                This is a special date in our story —
-                a reminder of the beginning of something
-                beautiful between us.
-            </p>
-
-            <p class="highlight">
-                One date. Two hearts. A story still being written.
-            </p>
-        </div>
-
-        <div class="buttons">
-            <button class="btn" onclick="prevScene()">← Previous</button>
-            <button class="btn primary" onclick="nextScene()">Continue →</button>
-        </div>
-
-    </div>
-</section>
-
-
-<!-- SCENE 4: FIRST MEETING -->
-
-<section class="scene" id="scene3">
-    <div class="content">
-
-        <div class="eyebrow">A memory I treasure</div>
-
-        <h2>Our First Meeting 🥹</h2>
-
-        <div class="card">
-
-            <!-- EDIT HERE:
-                 Replace this paragraph with your personal
-                 first-meeting memory. -->
-
-            <p id="firstMeetMemory">
-                [EDIT HERE: Write your first-meeting memory.]
-            </p>
-
-            <p>
-                Some memories become special not because
-                they are perfect, but because of the person
-                we share them with.
-            </p>
-
-        </div>
-
-        <div class="photo-grid">
-
-            <div class="photo-card">
-                <img src="images/first-meet.jpg"
-                     alt="Our first meeting memory"
-                     loading="lazy"
-                     onerror="this.style.display='none'">
-
-                <p>Our First Meet ❤️</p>
-            </div>
-
-            <div class="photo-card">
-                <img src="images/memory-1.jpg"
-                     alt="A favourite memory"
-                     loading="lazy"
-                     onerror="this.style.display='none'">
-
-                <p>A Moment to Remember ✨</p>
-            </div>
-
-        </div>
-
-        <p class="highlight">
-            If I could keep one memory in a little box forever,
-            this would be one of them.
-        </p>
-
-        <div class="buttons">
-            <button class="btn" onclick="prevScene()">← Previous</button>
-            <button class="btn primary" onclick="nextScene()">Continue →</button>
-        </div>
-
-    </div>
-</section>
-
-
-<!-- SCENE 5: LONG DISTANCE -->
-
-<section class="scene" id="scene4">
-    <div class="content">
-
-        <div class="eyebrow">Even when we're apart</div>
-
-        <h2>Distance Can't Erase Us 🌙</h2>
-
-        <div class="heart-icon">💞</div>
-
-        <div class="card">
-
-            <p>
-                Long distance isn't always easy.
-                There are days when I wish I could be beside you,
-                especially when life feels difficult.
-            </p>
-
-            <p>
-                Sometimes, all I want is to sit next to you,
-                listen to you, hold your hand,
-                and remind you that you don't have to face
-                everything alone.
-            </p>
-
-            <p>
-                Until we can meet again,
-                I keep our memories close
-                and look at your photos when I miss you.
-            </p>
-
-            <p class="highlight">
-                The distance is real, but so are the moments
-                that make our connection special. ❤️
-            </p>
-
-        </div>
-
-        <div class="buttons">
-            <button class="btn" onclick="prevScene()">← Previous</button>
-            <button class="btn primary" onclick="nextScene()">Continue →</button>
-        </div>
-
-    </div>
-</section>
-
-
-<!-- SCENE 6: PHOTOS -->
-
-<section class="scene" id="scene5">
-    <div class="content">
-
-        <div class="eyebrow">Little pieces of our story</div>
-
-        <h2>Our Memory Gallery 📸</h2>
 
         <p>
-            Every photo holds a little moment
-            that I want to remember.
+          I dream of hugging you every day and falling
+          asleep peacefully beside you.
         </p>
-
-        <div class="photo-grid">
-
-            <div class="photo-card">
-                <img src="images/memory-1.jpg"
-                     alt="Memory one"
-                     loading="lazy"
-                     onerror="this.style.display='none'">
-                <p>One of My Favourite Moments ❤️</p>
-            </div>
-
-            <div class="photo-card">
-                <img src="images/memory-2.jpg"
-                     alt="Memory two"
-                     loading="lazy"
-                     onerror="this.style.display='none'">
-                <p>A Little Piece of Happiness 🌷</p>
-            </div>
-
-            <div class="photo-card">
-                <img src="images/favourite-photo.jpg"
-                     alt="Favourite photo"
-                     loading="lazy"
-                     onerror="this.style.display='none'">
-                <p>My Favourite Picture 💗</p>
-            </div>
-
-            <div class="photo-card">
-                <img src="images/first-meet.jpg"
-                     alt="First meeting"
-                     loading="lazy"
-                     onerror="this.style.display='none'">
-                <p>A Memory Close to My Heart ✨</p>
-            </div>
-
-        </div>
-
-        <p class="highlight">
-            My favourite part of these pictures
-            is the person in them.
-        </p>
-
-        <div class="buttons">
-            <button class="btn" onclick="prevScene()">← Previous</button>
-            <button class="btn primary" onclick="nextScene()">Continue →</button>
-        </div>
-
-    </div>
-</section>
-
-
-<!-- SCENE 7: WHY I LOVE YOU -->
-
-<section class="scene" id="scene6">
-    <div class="content">
-
-        <div class="eyebrow">A few words from my heart</div>
-
-        <h2>Why You're So Special 💖</h2>
-
-        <div class="card">
-
-            <p>
-                It's not just one thing that makes you special to me.
-            </p>
-
-            <p>
-                It's your little habits, our conversations,
-                the memories we share,
-                and the way ordinary moments can feel meaningful
-                when they involve you.
-            </p>
-
-            <p>
-                I love the cute moments,
-                the silly conversations,
-                and all the little things that make our story ours.
-            </p>
-
-            <p class="highlight">
-                I don't need a perfect story.
-                I'm grateful for the real one we're building together.
-            </p>
-
-        </div>
-
-        <div class="buttons">
-            <button class="btn" onclick="prevScene()">← Previous</button>
-            <button class="btn primary" onclick="nextScene()">Continue →</button>
-        </div>
-
-    </div>
-</section>
-
-
-<!-- SCENE 8: MY PROMISE -->
-
-<section class="scene" id="scene7">
-    <div class="content">
-
-        <div class="eyebrow">A promise for tomorrow</div>
-
-        <h2>My Promise to You 🤍</h2>
-
-        <div class="card">
-
-            <p>
-                I want to keep choosing honesty,
-                kindness, patience, and understanding.
-            </p>
-
-            <p>
-                I want us to support each other,
-                celebrate each other's happiness,
-                and face difficult days as a team.
-            </p>
-
-            <p>
-                I dream of a future where we can build a life together,
-                become husband and wife if that is the future
-                we both choose, and make a home filled with
-                care, laughter, and peace.
-            </p>
-
-            <p class="highlight">
-                Not just beautiful words today,
-                but a connection we keep nurturing every day. 💍
-            </p>
-
-        </div>
-
-        <div class="buttons">
-            <button class="btn" onclick="prevScene()">← Previous</button>
-            <button class="btn primary" onclick="nextScene()">Continue →</button>
-        </div>
-
-    </div>
-</section>
-
-
-<!-- SCENE 9: OUR DREAM -->
-
-<section class="scene" id="scene8">
-    <div class="content">
-
-        <div class="eyebrow">A dream for our future</div>
-
-        <h2>One Day, Soon Enough 🌙</h2>
-
-        <div class="heart-icon">🫂</div>
-
-        <div class="card">
-
-            <p>
-                One day, I hope distance becomes a memory
-                we talk about from the comfort of our home.
-            </p>
-
-            <p>
-                No more counting the days until we meet.
-                No more wishing we could be in the same place.
-            </p>
-
-            <p>
-                Just peaceful evenings, warm hugs,
-                silly conversations, and falling asleep
-                knowing we don't have to say goodbye for a while.
-            </p>
-
-            <p class="highlight">
-                A simple life, a shared home,
-                and beautiful ordinary days together. ❤️
-            </p>
-
-        </div>
-
-        <div class="buttons">
-            <button class="btn" onclick="prevScene()">← Previous</button>
-            <button class="btn primary" onclick="nextScene()">Continue →</button>
-        </div>
-
-    </div>
-</section>
-
-
-<!-- SCENE 10: LOVE LETTER -->
-
-<section class="scene" id="scene9">
-    <div class="content">
-
-        <div class="eyebrow">A letter from my heart</div>
-
-        <h2>To My Favourite Person 💌</h2>
-
-        <div class="card letter" id="loveLetter">
-
-To the person who became such a special part of my life,
-
-Our story began with a simple conversation,
-but it has given me so many memories to treasure.
-
-Even when distance makes things difficult,
-I am grateful for the moments we have shared
-and the memories that keep us close.
-
-I hope you always feel appreciated,
-respected, understood, and cared for.
-
-I hope your birthday brings you happiness,
-peace, laughter, and many beautiful new memories.
-
-And I hope we keep learning about each other,
-growing together, and making our story
-more beautiful in the days ahead.
-
-With all my love,
-Your favourite person ❤️
-
-        </div>
-
-        <!-- EDIT HERE:
-             You can replace the letter above with your
-             own message directly inside this HTML. -->
-
-        <div class="buttons">
-            <button class="btn" onclick="prevScene()">← Previous</button>
-            <button class="btn primary" onclick="nextScene()">One Last Surprise 🎁</button>
-        </div>
-
-    </div>
-</section>
-
-
-<!-- SCENE 11: FINAL BIRTHDAY SURPRISE -->
-
-<section class="scene" id="scene10">
-    <div class="content">
-
-        <div class="eyebrow">Made with love, just for you</div>
-
-        <div class="heart-icon">🎂</div>
-
-        <h1>Happy Birthday,<br>My Love! ❤️</h1>
 
         <p>
-            Today is your day.
-            I hope it reminds you of how much happiness,
-            warmth, and love you deserve.
+          I hope we keep choosing each other with love,
+          honesty, patience, and understanding.
         </p>
-
-        <div class="card">
-
-            <h2>One More Thing... 💗</h2>
-
-            <p>
-                There's a little message I've saved
-                especially for your birthday.
-            </p>
-
-            <button class="btn primary" onclick="revealSurprise()">
-                Open Your Final Surprise 💌
-            </button>
-
-            <div id="surpriseMessage">
-
-                <div class="heart-icon">💖</div>
-
-                <!-- EDIT HERE:
-                     Replace the placeholder below with
-                     your own birthday message. -->
-
-                <p id="birthdayMessage" class="highlight">
-                    [EDIT HERE: Write your personal birthday wish.]
-                </p>
-
-                <p>
-                    Happy Birthday once again! 🌹
-                </p>
-
-            </div>
-
-        </div>
 
         <p class="highlight">
-            Here's to more memories, more laughter,
-            and more beautiful chapters in our story.
+          My dream is to build a lifetime with you. ❤️
+        </p>
+      </div>
+
+      <button class="next-button" data-next="8">Our Memories 📸</button>
+    </div>
+  </section>
+
+  <!-- Scene 8: Photo Memories -->
+  <section class="scene" id="scene8">
+    <div class="scene-content">
+      <p class="eyebrow">CHAPTER 07</p>
+      <h2>Little Pieces Of Us 📸</h2>
+
+      <p class="subtitle">
+        Every picture has a memory. Every memory has a place in my heart.
+      </p>
+
+      <div class="photo-gallery">
+
+        <figure class="gallery-item">
+          <img
+            src="images/memory-1.jpg"
+            alt="Our memory one"
+            class="memory-photo"
+            loading="lazy"
+          >
+          <figcaption>One of my favourite memories ❤️</figcaption>
+        </figure>
+
+        <figure class="gallery-item">
+          <img
+            src="images/memory-2.jpg"
+            alt="Our memory two"
+            class="memory-photo"
+            loading="lazy"
+          >
+          <figcaption>A moment worth remembering 💗</figcaption>
+        </figure>
+
+        <figure class="gallery-item">
+          <img
+            src="images/memory-3.jpg"
+            alt="Our memory three"
+            class="memory-photo"
+            loading="lazy"
+          >
+          <figcaption>A little happiness, captured forever ✨</figcaption>
+        </figure>
+
+      </div>
+
+      <button class="next-button" data-next="9">One Last Letter 💌</button>
+    </div>
+  </section>
+
+  <!-- Scene 9: Love Letter -->
+  <section class="scene" id="scene9">
+    <div class="scene-content">
+      <p class="eyebrow">FROM MY HEART</p>
+      <h2>For You, Ammu 💌</h2>
+
+      <div class="letter-card">
+        <p class="letter-greeting">My dearest Ammu, ❤️</p>
+
+        <p>
+          Sometimes, I wonder how a simple conversation
+          could become such a meaningful part of my life.
+          Then I remember that it was you.
         </p>
 
-        <div class="buttons">
-            <button class="btn" onclick="prevScene()">← Previous</button>
-            <button class="btn primary" onclick="restartStory()">Read Again ↻</button>
-        </div>
+        <p>
+          You came into my life with trust, and I value
+          the courage and care behind that trust.
+          You are more than a memory or a moment to me.
+          You are someone I hope to build a future with.
+        </p>
 
+        <p>
+          I know I cannot always be beside you when
+          you need comfort. But I hope we keep talking,
+          listening, understanding, and supporting each other.
+        </p>
+
+        <p>
+          I want us to grow together, share ordinary days,
+          celebrate little victories, and make many more
+          beautiful memories.
+        </p>
+
+        <p class="letter-ending">
+          With all my love,<br>
+          Yours, Idiot ❤️
+        </p>
+      </div>
+
+      <button class="next-button" data-next="10">Your Birthday Surprise 🎂</button>
     </div>
-</section>
-
-</main>
-
-
-<script>
-/* =====================================
-   SCENE NAVIGATION
-===================================== */
-
-const scenes = document.querySelectorAll(".scene");
-let currentScene = 0;
-
-function showScene(index) {
-    if (index < 0 || index >= scenes.length) return;
-
-    scenes.forEach(scene => scene.classList.remove("active"));
-
-    currentScene = index;
-    scenes[currentScene].classList.add("active");
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-
-    if (currentScene === scenes.length - 1) {
-        startFireworks();
-    }
-}
-
-function nextScene() {
-    if (currentScene < scenes.length - 1) {
-        showScene(currentScene + 1);
-    }
-}
-
-function prevScene() {
-    if (currentScene > 0) {
-        showScene(currentScene - 1);
-    }
-}
-
-function restartStory() {
-    stopFireworks();
-    showScene(0);
-}
-
-
-/* =====================================
-   STAR BACKGROUND
-===================================== */
-
-const stars = document.getElementById("stars");
-
-for (let i = 0; i < 100; i++) {
-    const star = document.createElement("span");
-
-    star.className = "star";
-    star.style.left = Math.random() * 100 + "%";
-    star.style.top = Math.random() * 100 + "%";
-    star.style.animationDelay = Math.random() * 3 + "s";
-    star.style.animationDuration = (1 + Math.random() * 3) + "s";
-
-    stars.appendChild(star);
-}
-
-
-/* =====================================
-   FLOATING PARTICLES
-===================================== */
-
-const particles = document.getElementById("particles");
-
-for (let i = 0; i < 24; i++) {
-    const particle = document.createElement("span");
-
-    particle.className = "particle";
-    particle.style.left = Math.random() * 100 + "%";
-    particle.style.animationDelay = Math.random() * 12 + "s";
-    particle.style.animationDuration = (8 + Math.random() * 10) + "s";
-
-    particles.appendChild(particle);
-}
-
-
-/* =====================================
-   FLOATING HEARTS
-===================================== */
-
-const hearts = document.getElementById("hearts");
-
-function createHeart() {
-    if (hearts.childElementCount > 18) return;
-
-    const heart = document.createElement("span");
-
-    heart.className = "floating-heart";
-    heart.textContent = ["❤️", "💕", "💗", "💖", "🤍"][
-        Math.floor(Math.random() * 5)
-    ];
-
-    heart.style.left = Math.random() * 100 + "%";
-    heart.style.fontSize = (14 + Math.random() * 20) + "px";
-    heart.style.animationDuration = (7 + Math.random() * 7) + "s";
-
-    hearts.appendChild(heart);
-
-    setTimeout(() => heart.remove(), 15000);
-}
-
-setInterval(createHeart, 1200);
-
-
-/* =====================================
-   FALLING ROSES
-===================================== */
-
-const roses = document.getElementById("roses");
-
-function createRose() {
-    if (roses.childElementCount > 12) return;
-
-    const rose = document.createElement("span");
-
-    rose.className = "rose";
-    rose.textContent = ["🌹", "🌸", "🌷"][
-        Math.floor(Math.random() * 3)
-    ];
-
-    rose.style.left = Math.random() * 100 + "%";
-    rose.style.fontSize = (15 + Math.random() * 13) + "px";
-    rose.style.animationDuration = (8 + Math.random() * 7) + "s";
-
-    roses.appendChild(rose);
-
-    setTimeout(() => rose.remove(), 16000);
-}
-
-setInterval(createRose, 2500);
-
-
-/* =====================================
-   SPARKLES
-===================================== */
-
-const sparkles = document.getElementById("sparkles");
-
-function createSparkle() {
-    if (sparkles.childElementCount > 20) return;
-
-    const sparkle = document.createElement("span");
-
-    sparkle.className = "sparkle";
-    sparkle.textContent = "✦";
-    sparkle.style.left = Math.random() * 100 + "%";
-    sparkle.style.top = Math.random() * 100 + "%";
-    sparkle.style.color = ["#fff", "#ffdca8", "#ff9ac7"][
-        Math.floor(Math.random() * 3)
-    ];
-    sparkle.style.fontSize = (10 + Math.random() * 13) + "px";
-
-    sparkles.appendChild(sparkle);
-
-    setTimeout(() => sparkle.remove(), 1600);
-}
-
-setInterval(createSparkle, 500);
-
-
-/* =====================================
-   WALKING CATS
-===================================== */
-
-const cats = document.getElementById("cats");
-
-function createCat() {
-    if (cats.childElementCount > 2) return;
-
-    const cat = document.createElement("span");
-
-    cat.className = "cat";
-    cat.textContent = ["🐈", "🐈‍⬛", "🐱"][
-        Math.floor(Math.random() * 3)
-    ];
-
-    cats.appendChild(cat);
-
-    cat.addEventListener("animationend", () => cat.remove());
-}
-
-createCat();
-setInterval(createCat, 9000);
-
-
-/* =====================================
-   BACKGROUND MUSIC
-===================================== */
-
-const music = document.getElementById("music");
-const musicButton = document.getElementById("musicButton");
-
-let musicPlaying = false;
-
-async function toggleMusic() {
-    if (musicPlaying) {
-        music.pause();
-        musicPlaying = false;
-        musicButton.textContent = "🎵 Play Music";
-        return;
-    }
-
-    try {
-        await music.play();
-
-        musicPlaying = true;
-        musicButton.textContent = "⏸ Pause Music";
-    } catch (error) {
-        musicButton.textContent = "🎵 Tap to Play Again";
-    }
-}
-
-
-/* =====================================
-   FINAL BIRTHDAY SURPRISE
-===================================== */
-
-function revealSurprise() {
-    document.getElementById("surpriseMessage").classList.add("show");
-
-    startFireworks();
-
-    for (let i = 0; i < 10; i++) {
-        setTimeout(createHeart, i * 150);
-    }
-}
-
-
-/* =====================================
-   FIREWORKS
-===================================== */
-
-const canvas = document.getElementById("fireworks");
-const ctx = canvas.getContext("2d");
-
-let fireworks = [];
-let fireworksRunning = false;
-let animationFrame = null;
-
-function resizeCanvas() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-
-    canvas.width = window.innerWidth * dpr;
-    canvas.height = window.innerHeight * dpr;
-
-    canvas.style.width = window.innerWidth + "px";
-    canvas.style.height = window.innerHeight + "px";
-
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-}
-
-window.addEventListener("resize", resizeCanvas);
-resizeCanvas();
-
-function launchFirework() {
-    if (fireworks.length > 350) return;
-
-    const x = Math.random() * window.innerWidth;
-    const y = Math.random() * window.innerHeight * 0.55;
-    const hue = Math.random() * 360;
-
-    for (let i = 0; i < 32; i++) {
-        const angle = (Math.PI * 2 * i) / 32;
-        const speed = 1 + Math.random() * 3;
-
-        fireworks.push({
-            x,
-            y,
-            vx: Math.cos(angle) * speed,
-            vy: Math.sin(angle) * speed,
-            life: 50,
-            hue
-        });
-    }
-}
-
-function animateFireworks() {
-    if (!fireworksRunning) return;
-
-    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-
-    fireworks = fireworks.filter(particle => particle.life > 0);
-
-    for (const particle of fireworks) {
-        particle.x += particle.vx;
-        particle.y += particle.vy;
-        particle.vy += 0.025;
-        particle.life--;
-
-        ctx.globalAlpha = particle.life / 50;
-        ctx.fillStyle = `hsl(${particle.hue}, 100%, 70%)`;
-
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, 2, 0, Math.PI * 2);
-        ctx.fill();
-    }
-
-    ctx.globalAlpha = 1;
-
-    animationFrame = requestAnimationFrame(animateFireworks);
-}
-
-function startFireworks() {
-    if (fireworksRunning) return;
-
-    fireworksRunning = true;
-    fireworks = [];
-
-    launchFirework();
-
-    animateFireworks();
-
-    const launchTimer = setInterval(() => {
-        if (!fireworksRunning) {
-            clearInterval(launchTimer);
-            return;
-        }
-
-        launchFirework();
-    }, 700);
-
-    setTimeout(() => {
-        clearInterval(launchTimer);
-    }, 12000);
-}
-
-function stopFireworks() {
-    fireworksRunning = false;
-
-    if (animationFrame) {
-        cancelAnimationFrame(animationFrame);
-    }
-
-    fireworks = [];
-    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-}
-
-
-/* =====================================
-   KEYBOARD NAVIGATION
-===================================== */
-
-document.addEventListener("keydown", event => {
-    if (event.key === "ArrowRight") nextScene();
-    if (event.key === "ArrowLeft") prevScene();
-});
-
-
-/* START */
-
-showScene(0);
-</script>
-
+  </section>
+
+  <!-- Scene 10: Birthday Surprise -->
+  <section class="scene" id="scene10">
+    <div class="scene-content">
+      <p class="eyebrow">YOUR SPECIAL DAY</p>
+
+      <div class="birthday-cake">🎂</div>
+
+      <h1 class="glow-title birthday-title">
+        Happy Birthday,<br>Ammu! 🎉
+      </h1>
+
+      <p class="subtitle">
+        Today is all about you — your happiness,
+        your dreams, and the beautiful person you are.
+      </p>
+
+      <div class="photo-frame favourite-frame">
+        <img
+          src="images/favourite-photo.jpg"
+          alt="My favourite photo of Ammu"
+          class="memory-photo"
+          loading="lazy"
+        >
+      </div>
+
+      <div class="birthday-message-card">
+        <h3>A Little Message From Me 💗</h3>
+        <p id="birthdayMessageDisplay">
+          Your personal birthday message will appear here.
+        </p>
+      </div>
+
+      <button id="fireworksButton" class="next-button" type="button">
+        Make A Wish ✨
+      </button>
+
+      <p class="final-note">
+        No matter what the future brings, I hope your life
+        is filled with happiness, love, and peace. ❤️
+      </p>
+
+      <button id="restartButton" class="secondary-button" type="button">
+        ↻ Relive Our Story
+      </button>
+    </div>
+  </section>
+
+  <!-- Fireworks Canvas -->
+  <canvas id="fireworksCanvas"></canvas>
+
+  <!-- Photo Viewer -->
+  <div id="photoViewer" class="photo-viewer">
+    <button id="closePhotoViewer" class="close-viewer" type="button">
+      ✕
+    </button>
+    <img id="expandedPhoto" src="" alt="Expanded memory photo">
+  </div>
+
+  <script src="script.js"></script>
 </body>
-  </html>
+</html>
