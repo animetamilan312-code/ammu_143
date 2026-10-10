@@ -61,22 +61,12 @@ img {
 
 #hearts-container,
 #petals-container,
-#sparkles-container,
-#cats-container {
+#sparkles-container {
   position: fixed;
   inset: 0;
   overflow: hidden;
   pointer-events: none;
-}
-
-#hearts-container,
-#petals-container,
-#sparkles-container {
   z-index: 1;
-}
-
-#cats-container {
-  z-index: 3;
 }
 
 .progress-track {
@@ -105,6 +95,7 @@ img {
 }
 
 .scene {
+  position: relative;
   display: none;
   width: 100%;
   min-height: 100vh;
@@ -116,6 +107,58 @@ img {
 .scene.active {
   display: flex;
   animation: sceneEnter 0.7s ease both;
+}
+
+/* Page-specific GIF stickers */
+.page-sticker {
+  position: absolute;
+  z-index: 3;
+  display: block;
+
+  /* Responsive size without disturbing the layout */
+  width: clamp(42px, 6vw, 68px);
+  height: auto;
+  max-width: 18%;
+  max-height: 75px;
+
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+
+  animation: stickerFloat 3.8s ease-in-out infinite;
+}
+
+/* Desktop positioning */
+.sticker-top-left {
+  top: 110px;
+  left: 12px;
+}
+
+.sticker-top-right {
+  top: 110px;
+  right: 12px;
+}
+
+.sticker-bottom-left {
+  bottom: 16px;
+  left: 12px;
+}
+
+.sticker-bottom-right {
+  bottom: 16px;
+  right: 12px;
+}
+
+/* Subtle floating animation */
+@keyframes stickerFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+
+  50% {
+    transform: translateY(-5px) rotate(2deg);
+  }
 }
 
 .content {
@@ -549,15 +592,6 @@ h2 span {
   animation: sparkleFade ease-in-out forwards;
 }
 
-.moving-cat {
-  position: absolute;
-  bottom: 12px;
-  left: -80px;
-  font-size: 2rem;
-  opacity: 0.75;
-  animation: catWalk 18s linear forwards;
-}
-
 /* Photo viewer */
 .photo-viewer {
   position: fixed;
@@ -718,15 +752,38 @@ h2 span {
   }
 }
 
-@keyframes catWalk {
-  from { transform: translateX(0); }
-  to { transform: translateX(calc(100vw + 100px)); }
-}
-
 /* Tablets and phones */
 @media (max-width: 700px) {
   .scene {
     padding: 90px 18px 38px;
+  }
+
+/* Small, responsive GIF stickers */
+  .page-sticker {
+    width: clamp(38px, 10vw, 52px);
+    height: auto;
+    max-width: 15%;
+    max-height: 58px;
+  }
+
+  .sticker-top-left,
+  .sticker-top-right {
+    top: 78px;
+  }
+
+  .sticker-bottom-left,
+  .sticker-bottom-right {
+    bottom: 8px;
+  }
+
+  .sticker-top-left,
+  .sticker-bottom-left {
+    left: 8px;
+  }
+
+  .sticker-top-right,
+  .sticker-bottom-right {
+    right: 8px;
   }
 
   .gallery {
@@ -801,4 +858,4 @@ h2 span {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-}
+  }
