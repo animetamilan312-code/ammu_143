@@ -900,4 +900,3 @@ giftMessage.hidden = false;
     }  
   });  
 }
-\]
