@@ -1397,14 +1397,16 @@ h2 span {
     }
 }
 
-/* Right bow: move upward and toward the right */
+/* Right bow: move up and inward to match the left bow */
 @keyframes giftBowRightOpen {
     from {
         translate: 0 0;
+        rotate: 0deg;
     }
 
     to {
-        translate: 30px -65px;
+        translate: 12px -65px;
+        rotate: -12deg;
     }
 }
 
