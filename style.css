@@ -1377,40 +1377,34 @@ h2 span {
     animation: giftLidOpen 0.75s ease forwards;
 }
 
+/* Corrected golden bow animation */
 .gift-box-button[aria-expanded="true"] .gift-box::before {
-    animation: giftBowLeftOpen 0.75s ease forwards;
+    animation: giftBowLeftOpen 0.75s ease-out forwards;
 }
 
 .gift-box-button[aria-expanded="true"] .gift-box::after {
-    animation: giftBowRightOpen 0.75s ease forwards;
+    animation: giftBowRightOpen 0.75s ease-out forwards;
 }
 
-@keyframes giftLidOpen {
-    0% {
-        transform: translate(0, 0) rotate(0deg);
-    }
-    100% {
-        transform: translate(-10px, -30px) rotate(-30deg);
-    }
-}
-
+/* Left bow: move upward and toward the left */
 @keyframes giftBowLeftOpen {
-    0% {
-        transform: rotate(24deg) translate(0, 0);
+    from {
+        translate: 0 0;
     }
 
-    100% {
-        transform: translate(-24px, -75px) rotate(24deg);
+    to {
+        translate: -30px -65px;
     }
 }
 
+/* Right bow: move upward and toward the right */
 @keyframes giftBowRightOpen {
-    0% {
-        transform: rotate(-24deg) translate(0, 0);
+    from {
+        translate: 0 0;
     }
 
-    100% {
-        transform: translate(24px, -75px) rotate(-24deg);
+    to {
+        translate: 30px -65px;
     }
 }
 
@@ -1530,4 +1524,4 @@ h2 span {
   .site-lock {
     transition: none;
   }
-}
+  }
