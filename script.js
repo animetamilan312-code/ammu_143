@@ -175,12 +175,10 @@ paragraph.textContent;
 }
 
 /* Store original letter text before any animation begins. */
-
-\[
-(".typewriter-text").forEach((paragraph) => {  
-  paragraph.dataset.fullText =  
-    paragraph.textContent.replace(/\s+/g, " ").trim();  
-});  
+$$(".typewriter-text").forEach((paragraph) => {
+  paragraph.dataset.fullText =
+    paragraph.textContent.replace(/\s+/g, " ").trim();
+});
   
 /* =========================================================  
    SCENE NAVIGATION  
