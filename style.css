@@ -1198,105 +1198,241 @@ h2 span {
 }
 
 /* =========================================================
-   ANIMATED GIFT BOX
+   PREMIUM ANIMATED GIFT BOX
 ========================================================= */
 
 .gift-section {
   margin: 32px auto;
-  padding: clamp(20px, 5vw, 30px);
-  border: 1px solid rgba(255, 255, 255, 0.9);
+  padding: clamp(22px, 5vw, 34px);
+  border: 1px solid rgba(255, 255, 255, 0.95);
   border-radius: var(--radius);
-  background: var(--card);
-  box-shadow: var(--shadow);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 224, 236, 0.65), transparent 65%),
+    rgba(255, 255, 255, 0.82);
+  box-shadow:
+    0 18px 45px rgba(166, 62, 109, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  overflow: hidden;
 }
 
 .gift-box-button {
   display: flex;
   width: 100%;
-  padding: 15px;
+  padding: 20px 12px;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   border: 0;
-  border-radius: 18px;
+  border-radius: 20px;
   background: transparent;
   color: var(--pink-dark);
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.gift-box-button:focus-visible {
+  outline: 3px solid var(--pink-dark);
+  outline-offset: 4px;
 }
 
 .gift-box {
   position: relative;
   display: block;
-  width: 115px;
-  height: 105px;
-  margin-top: 18px;
+  width: 150px;
+  height: 140px;
+  margin: 22px auto 4px;
+  isolation: isolate;
+  perspective: 700px;
 }
 
+/* Main gift body */
 .gift-body {
   position: absolute;
-  inset: 25px 7px 0;
+  z-index: 1;
+  inset: 39px 9px 5px;
   display: grid;
   place-items: center;
-  border: 3px solid #a63e6d;
-  border-radius: 12px;
-  background: linear-gradient(145deg, #ffc2da, #e978a8);
-  font-size: 3.4rem;
-  box-shadow: 0 10px 20px rgba(166, 62, 109, 0.15);
+  overflow: hidden;
+  border: 2px solid #c85888;
+  border-radius: 5px 5px 12px 12px;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.2),
+      transparent 22%,
+      transparent 78%,
+      rgba(166, 62, 109, 0.12)
+    ),
+    linear-gradient(145deg, #ffd1e2 0%, #f49bc0 48%, #e978a8 100%);
+  box-shadow:
+    inset 5px 0 10px rgba(255, 255, 255, 0.2),
+    inset -5px 0 10px rgba(166, 62, 109, 0.08),
+    0 13px 20px rgba(166, 62, 109, 0.18);
+  font-size: 2.8rem;
 }
 
+/* Gold ribbon running down the front */
 .gift-ribbon {
   position: absolute;
   z-index: 2;
-  top: 25px;
-  bottom: 0;
+  top: 40px;
+  bottom: 7px;
   left: 50%;
-  width: 18px;
+  width: 23px;
   transform: translateX(-50%);
-  background: #fff3b0;
-  border-left: 2px solid rgba(166, 62, 109, 0.35);
-  border-right: 2px solid rgba(166, 62, 109, 0.35);
+  border-right: 1px solid rgba(151, 105, 26, 0.45);
+  border-left: 1px solid rgba(151, 105, 26, 0.45);
+  background: linear-gradient(
+    90deg,
+    #b8862e 0%,
+    #f8e6a0 20%,
+    #fff3c0 48%,
+    #e5bd59 75%,
+    #b8862e 100%
+  );
+  box-shadow: 0 0 8px rgba(201, 155, 66, 0.15);
   pointer-events: none;
 }
 
+/* Lid aligned directly over the box */
 .gift-lid {
   position: absolute;
-  z-index: 3;
-  top: 15px;
+  z-index: 4;
+  top: 29px;
   left: 0;
-  width: 115px;
+  width: 150px;
   height: 25px;
-  border: 3px solid #a63e6d;
-  border-radius: 8px;
-  background: #f7a1c2;
-  transform-origin: left bottom;
-  transition: transform 0.65s ease;
+  border: 2px solid #c85888;
+  border-radius: 6px;
+  background: linear-gradient(
+    180deg,
+    #ffd5e5 0%,
+    #f7a7c7 55%,
+    #e982ad 100%
+  );
+  box-shadow:
+    0 5px 8px rgba(166, 62, 109, 0.15),
+    inset 0 2px 2px rgba(255, 255, 255, 0.65);
+  transform-origin: 10px 22px;
+  transition:
+    transform 0.75s cubic-bezier(0.2, 0.75, 0.25, 1),
+    box-shadow 0.4s ease;
 }
 
-.gift-box-button:hover .gift-box {
-  animation: gentleFloat 1.2s ease-in-out infinite;
+/* Gold strip across the lid */
+.gift-lid::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 23px;
+  transform: translateX(-50%);
+  border-right: 1px solid rgba(151, 105, 26, 0.4);
+  border-left: 1px solid rgba(151, 105, 26, 0.4);
+  background: linear-gradient(
+    90deg,
+    #b8862e,
+    #f8e6a0 25%,
+    #fff3c0 50%,
+    #e5bd59 78%,
+    #b8862e
+  );
 }
 
+/* Decorative gold bow on top */
+.gift-box::before,
+.gift-box::after {
+  content: "";
+  position: absolute;
+  z-index: 5;
+  top: 5px;
+  width: 30px;
+  height: 19px;
+  border: 2px solid #c99b42;
+  background: linear-gradient(145deg, #fff2b8, #dfb64f);
+  box-shadow: 0 3px 5px rgba(151, 105, 26, 0.15);
+  pointer-events: none;
+}
+
+.gift-box::before {
+  left: calc(50% - 27px);
+  border-radius: 80% 15% 70% 25%;
+  transform: rotate(24deg);
+}
+
+.gift-box::after {
+  right: calc(50% - 27px);
+  border-radius: 15% 80% 25% 70%;
+  transform: rotate(-24deg);
+}
+
+/* Open the lid without breaking the gift layout */
 .gift-box-button[aria-expanded="true"] .gift-lid {
-  transform: translate(-10px, -30px) rotate(-30deg);
+  transform: translate(-7px, -24px) rotate(-32deg);
+  box-shadow: 0 12px 15px rgba(166, 62, 109, 0.15);
 }
 
 .gift-box-button[aria-expanded="true"] .gift-body {
-  box-shadow: 0 0 28px rgba(233, 120, 168, 0.4);
+  box-shadow:
+    inset 5px 0 10px rgba(255, 255, 255, 0.2),
+    0 0 28px rgba(233, 120, 168, 0.32),
+    0 13px 20px rgba(166, 62, 109, 0.18);
+}
+
+.gift-box-button:hover .gift-box {
+  animation: giftHover 1.8s ease-in-out infinite;
+}
+
+@keyframes giftHover {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
 }
 
 .gift-hint {
+  display: block;
+  max-width: 280px;
+  color: var(--pink-dark);
   font-size: 0.9rem;
+  line-height: 1.7;
 }
 
 .gift-message {
-  margin: 20px auto 0;
-  padding: 22px;
-  border: 1px solid rgba(233, 120, 168, 0.2);
+  margin: 22px auto 0;
+  padding: clamp(20px, 5vw, 28px);
+  border: 1px solid rgba(233, 120, 168, 0.25);
   border-radius: 20px;
-  background: rgba(255, 224, 236, 0.5);
+  color: var(--text);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(255, 224, 236, 0.7));
+  box-shadow: 0 10px 30px rgba(166, 62, 109, 0.08);
   animation: cardReveal 0.65s ease both;
 }
 
+@media (max-width: 380px) {
+  .gift-box {
+    transform: scale(0.9);
+    transform-origin: center top;
+    margin-bottom: -8px;
+  }
+
+  .gift-box-button {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gift-lid,
+  .gift-box-button:hover .gift-box {
+    transition: none !important;
+    animation: none !important;
+  }
+}
 /* =========================================================
    FINAL SCENE PNG
 ========================================================= */
