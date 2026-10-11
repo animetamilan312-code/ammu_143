@@ -1373,24 +1373,43 @@ h2 span {
   box-shadow: 0 12px 15px rgba(166, 62, 109, 0.15);
 }
 
-.gift-box-button[aria-expanded="true"] .gift-body {
-  box-shadow:
-    inset 5px 0 10px rgba(255, 255, 255, 0.2),
-    0 0 28px rgba(233, 120, 168, 0.32),
-    0 13px 20px rgba(166, 62, 109, 0.18);
+.gift-box-button[aria-expanded="true"] .gift-lid {
+    animation: giftLidOpen 0.75s ease forwards;
 }
 
-.gift-box-button:hover .gift-box {
-  animation: giftHover 1.8s ease-in-out infinite;
+.gift-box-button[aria-expanded="true"] .gift-box::before {
+    animation: giftBowLeftOpen 0.75s ease forwards;
 }
 
-@keyframes giftHover {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-5px);
-  }
+.gift-box-button[aria-expanded="true"] .gift-box::after {
+    animation: giftBowRightOpen 0.75s ease forwards;
+}
+
+@keyframes giftLidOpen {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    100% {
+        transform: translate(-10px, -30px) rotate(-30deg);
+    }
+}
+
+@keyframes giftBowLeftOpen {
+    0% {
+        transform: rotate(-24deg) translate(0, 0);
+    }
+    100% {
+        transform: rotate(-40deg) translate(-12px, -25px);
+    }
+}
+
+@keyframes giftBowRightOpen {
+    0% {
+        transform: rotate(24deg) translate(0, 0);
+    }
+    100% {
+        transform: rotate(40deg) translate(12px, -25px);
+    }
 }
 
 .gift-hint {
@@ -1509,4 +1528,4 @@ h2 span {
   .site-lock {
     transition: none;
   }
-    }
+}
