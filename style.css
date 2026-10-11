@@ -1396,19 +1396,21 @@ h2 span {
 
 @keyframes giftBowLeftOpen {
     0% {
-        transform: rotate(-24deg) translate(0, 0);
+        transform: rotate(24deg) translate(0, 0);
     }
+
     100% {
-        transform: rotate(-40deg) translate(-12px, -25px);
+        transform: translate(-18px, -65px) rotate(-35deg);
     }
 }
 
 @keyframes giftBowRightOpen {
     0% {
-        transform: rotate(24deg) translate(0, 0);
+        transform: rotate(-24deg) translate(0, 0);
     }
+
     100% {
-        transform: rotate(40deg) translate(12px, -25px);
+        transform: translate(18px, -65px) rotate(35deg);
     }
 }
 
@@ -1528,4 +1530,4 @@ h2 span {
   .site-lock {
     transition: none;
   }
-}
+  }
