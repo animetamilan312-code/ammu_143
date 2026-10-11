@@ -270,6 +270,46 @@
           </p>
         </article>
 
+<!-- PROPOSAL INTERACTION -->
+<article class="proposal-card">
+  <div class="proposal-heart" aria-hidden="true">💗</div>
+
+  <span class="eyebrow">One little question for you</span>
+  <h2>Will You Say <span>Yes?</span></h2>
+
+  <p class="subtitle">
+    Ammu, shall we keep creating beautiful memories together? ♡
+  </p>
+
+  <div class="proposal-actions" id="proposalActions">
+    <button
+      id="proposalYes"
+      class="primary-button proposal-yes"
+      type="button"
+    >
+      Yes! 💗
+    </button>
+
+    <button
+      id="proposalNo"
+      class="secondary-button proposal-no"
+      type="button"
+    >
+      No 🙈
+    </button>
+  </div>
+
+  <p
+    id="proposalSuccess"
+    class="proposal-success"
+    role="status"
+    aria-live="polite"
+    hidden
+  >
+    Aww! 💗 Here's to more beautiful memories together, Ammu! ✨
+  </p>
+</article>
+
         <button class="primary-button" type="button" data-next="8">
           Our Little Gallery →
         </button>
@@ -353,12 +393,18 @@
       <div class="content">
         <span class="eyebrow">Today is your special day</span>
 
-        <button
-          id="birthdayCakeButton"
-          class="birthday-cake"
-          type="button"
-          aria-label="Tap the birthday cake to make a wish"
-        >🎂</button>
+<button
+  id="birthdayCakeButton"
+  class="birthday-cake cake-image-button"
+  type="button"
+  aria-label="Tap the birthday picture to make a wish"
+>
+  <img
+    src="Picsart_26-10-11_11-25-12-045.png"
+    alt="Birthday celebration with two cute bears and a birthday cake"
+    class="birthday-cake-image"
+  >
+</button>
 
         <p id="cakeWishMessage" class="cake-wish-message" hidden>
           Close your eyes, make a wish, Ammu! ✨💗
@@ -390,6 +436,35 @@
         <button id="restartButton" class="secondary-button" type="button">
           ↺ Relive Our Story
         </button>
+
+<!-- ANIMATED GIFT BOX -->
+<div class="gift-section">
+  <p class="highlight-text">A little gift, just for you 🎁</p>
+
+  <button
+    id="giftBoxButton"
+    class="gift-box-button"
+    type="button"
+    aria-expanded="false"
+    aria-controls="giftMessage"
+  >
+    <span class="gift-box" aria-hidden="true">
+      <span class="gift-lid"></span>
+      <span class="gift-ribbon"></span>
+      <span class="gift-body">🎁</span>
+    </span>
+
+    <span class="gift-hint">Tap to open your gift ♡</span>
+  </button>
+
+  <div id="giftMessage" class="gift-message" hidden>
+    <h2>A Little Surprise for <span>Ammu!</span> 💗</h2>
+    <p>
+      The best memories are the ones we continue creating together.
+      Wishing you a beautiful birthday filled with smiles and happiness! ♡
+    </p>
+  </div>
+</div>
 
         <!-- CINEMATIC FINAL SURPRISE -->
         <div id="finalSurprise" class="final-surprise" hidden>
