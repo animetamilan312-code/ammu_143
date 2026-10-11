@@ -1400,7 +1400,7 @@ h2 span {
     }
 
     100% {
-        transform: translate(-18px, -65px) rotate(-35deg);
+        transform: translate(-24px, -75px) rotate(24deg);
     }
 }
 
@@ -1410,7 +1410,7 @@ h2 span {
     }
 
     100% {
-        transform: translate(18px, -65px) rotate(35deg);
+        transform: translate(24px, -75px) rotate(-24deg);
     }
 }
 
@@ -1530,4 +1530,4 @@ h2 span {
   .site-lock {
     transition: none;
   }
-  }
+}
