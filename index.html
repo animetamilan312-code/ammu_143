@@ -352,38 +352,99 @@
       </div>
     </section>
 
-    <!-- SCENE 9 -->
-    <section class="scene" id="scene9">
-      <img class="page-sticker sticker-bottom-right"
-           src="DanceDance.gif" alt="" aria-hidden="true">
+<!-- SCENE 9: PREMIUM LOVE LETTER -->
+<section class="scene" id="scene9">
+  <img
+    class="page-sticker sticker-bottom-right"
+    src="DanceDance.gif"
+    alt=""
+    aria-hidden="true"
+  >
 
-      <div class="content">
-        <span class="eyebrow">From my heart to yours</span>
-        <h2>A Little <span>Love Letter</span></h2>
+  <div class="content letter-scene-content">
+    <span class="eyebrow">From my heart to yours</span>
 
-        <article class="letter-card">
-          <div class="letter-decoration">♡</div>
-          <p class="letter-greeting">My Ammu,</p>
+    <h2>A Little <span>Love Letter</span></h2>
 
-          <p class="typewriter-text">
-            No matter how many memories we make, there will always be
-            more things I want to tell you and more moments I hope
-            we get to share.
-          </p>
+    <p class="subtitle">
+      A little message, written just for you. ♡
+    </p>
 
-          <p class="typewriter-text">
-            Thank you for being part of my story. I hope we continue
-            learning, growing, laughing, and caring for each other.
-          </p>
+    <!-- CLOSED ENVELOPE -->
+    <div class="love-envelope-wrap" id="loveEnvelopeWrap">
+      <button
+        class="love-envelope"
+        id="openLoveLetter"
+        type="button"
+        aria-label="Open your love letter"
+        aria-expanded="false"
+        aria-controls="loveLetterPaper"
+      >
+        <span class="envelope-back"></span>
 
-          <p class="letter-signature">Yours, <span>Idiot</span> ♡</p>
-        </article>
+        <span class="envelope-letter-preview">
+          <span>For My Ammu</span>
+          <span>With Love ♡</span>
+        </span>
 
-        <button class="primary-button" type="button" data-next="10">
-          Your Birthday Surprise 🎂
-        </button>
+        <span class="envelope-flap"></span>
+        <span class="envelope-front"></span>
+
+        <span class="envelope-seal" aria-hidden="true">♥</span>
+      </button>
+
+      <p class="envelope-hint" id="envelopeHint">
+        Tap the heart to open your letter ♡
+      </p>
+    </div>
+
+    <!-- LETTER PAPER -->
+    <article
+      class="letter-paper"
+      id="loveLetterPaper"
+      aria-hidden="true"
+      hidden
+      inert
+    >
+      <div class="letter-paper-inner">
+        <div class="letter-top-decoration" aria-hidden="true">
+          ✦ &nbsp; ♡ &nbsp; ✦
+        </div>
+
+        <p class="letter-greeting letter-line">My Ammu, 💗</p>
+
+        <p class="typewriter-text letter-line">
+          No matter how many memories we make, there will always be
+          more things I want to tell you and more moments I hope
+          we get to share.
+        </p>
+
+        <p class="typewriter-text letter-line">
+          Thank you for being part of my story. I hope we continue
+          learning, growing, laughing, and caring for each other.
+        </p>
+
+        <p class="letter-signature letter-line">
+          Yours, <span>Idiot</span> ♡
+        </p>
+
+        <div class="letter-bottom-decoration">
+          Made with love, just for you ♡
+        </div>
       </div>
-    </section>
+    </article>
+
+    <button
+      class="primary-button letter-next-button"
+      id="letterNextButton"
+      type="button"
+      data-next="10"
+      hidden
+    >
+      Your Birthday Surprise 🎂
+    </button>
+  </div>
+</section>
 
     <!-- SCENE 10 -->
     <section class="scene" id="scene10">
