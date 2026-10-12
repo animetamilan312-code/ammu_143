@@ -113,54 +113,64 @@ typewriterTimers = [];
 }
 
 function startTypewriter() {
-if (typewriterStarted) return;
+  if (typewriterStarted) return;
 
-const letterScene = $("#scene9");
+  const letterScene = $("#scene9");
 
-if (!letterScene) return;
+  if (!letterScene) return;
 
-const paragraphs = $$(".typewriter-text", letterScene);
+  const paragraphs = $$(".typewriter-text", letterScene);
 
-if (!paragraphs.length) return;
+  if (!paragraphs.length) return;
 
-typewriterStarted = true;
+  typewriterStarted = true;
 
-if (reducedMotion) return;
+  if (reducedMotion) {
+    paragraphs.forEach((paragraph) => {
+      paragraph.textContent =
+        paragraph.dataset.fullText || paragraph.textContent;
 
-paragraphs.forEach((paragraph, paragraphIndex) => {
-const fullText = paragraph.textContent.replace(/\s+/g, " ").trim();
+      paragraph.classList.remove("typing");
+    });
 
-paragraph.textContent = "";  
-paragraph.classList.add("typing");  
+    return;
+  }
 
-let characterIndex = 0;  
+  paragraphs.forEach((paragraph, paragraphIndex) => {
+    const fullText =
+      paragraph.dataset.fullText ||
+      paragraph.textContent.replace(/\s+/g, " ").trim();
 
-function typeNextCharacter() {  
-  if (!letterScene.classList.contains("active")) {  
-    paragraph.textContent = fullText;  
-    paragraph.classList.remove("typing");  
-    return;  
-  }  
+    paragraph.textContent = "";
+    paragraph.classList.add("typing");
 
-  if (characterIndex < fullText.length) {  
-    paragraph.textContent += fullText.charAt(characterIndex);  
-    characterIndex++;  
+    let characterIndex = 0;
 
-    const timer = window.setTimeout(typeNextCharacter, 20);  
-    typewriterTimers.push(timer);  
-  } else {  
-    paragraph.classList.remove("typing");  
-  }  
-}  
+    function typeNextCharacter() {
+      if (!letterScene.classList.contains("active")) {
+        paragraph.textContent = fullText;
+        paragraph.classList.remove("typing");
+        return;
+      }
 
-const startTimer = window.setTimeout(  
-  typeNextCharacter,  
-  450 + paragraphIndex * 350  
-);  
+      if (characterIndex < fullText.length) {
+        paragraph.textContent += fullText.charAt(characterIndex);
+        characterIndex++;
 
-typewriterTimers.push(startTimer);
+        const timer = window.setTimeout(typeNextCharacter, 20);
+        typewriterTimers.push(timer);
+      } else {
+        paragraph.classList.remove("typing");
+      }
+    }
 
-});
+    const startTimer = window.setTimeout(
+      typeNextCharacter,
+      450 + paragraphIndex * 350
+    );
+
+    typewriterTimers.push(startTimer);
+  });
 }
 
 function resetTypewriter() {
@@ -179,7 +189,123 @@ $$(".typewriter-text").forEach((paragraph) => {
   paragraph.dataset.fullText =
     paragraph.textContent.replace(/\s+/g, " ").trim();
 });
-  
+
+/* =========================================
+   SCENE 9 — ENVELOPE AND LETTER CONTROLS
+========================================= */
+
+const openLoveLetterButton = $("#openLoveLetter");
+const loveEnvelopeWrap = $("#loveEnvelopeWrap");
+const loveLetterPaper = $("#loveLetterPaper");
+const envelopeHint = $("#envelopeHint");
+const letterNextButton = $("#letterNextButton");
+
+let letterOpening = false;
+
+function resetLetterScene() {
+  letterOpening = false;
+
+  if (openLoveLetterButton) {
+    openLoveLetterButton.classList.remove("is-open");
+    openLoveLetterButton.disabled = false;
+    openLoveLetterButton.setAttribute("aria-expanded", "false");
+  }
+
+  if (loveEnvelopeWrap) {
+    loveEnvelopeWrap.hidden = false;
+  }
+
+  if (envelopeHint) {
+    envelopeHint.textContent = "Tap the heart to open your letter ♡";
+  }
+
+  if (loveLetterPaper) {
+    loveLetterPaper.hidden = true;
+    loveLetterPaper.inert = true;
+    loveLetterPaper.setAttribute("aria-hidden", "true");
+    loveLetterPaper.classList.remove("is-opening", "is-writing");
+  }
+
+  if (letterNextButton) {
+    letterNextButton.hidden = true;
+  }
+
+  resetTypewriter();
+}
+
+if (openLoveLetterButton) {
+  openLoveLetterButton.addEventListener("click", () => {
+    if (letterOpening) return;
+
+    letterOpening = true;
+
+    openLoveLetterButton.classList.add("is-open");
+    openLoveLetterButton.setAttribute("aria-expanded", "true");
+    openLoveLetterButton.disabled = true;
+
+    if (envelopeHint) {
+      envelopeHint.textContent = "A little message, just for you... ♡";
+    }
+
+    window.setTimeout(() => {
+      if (!loveLetterPaper || !loveEnvelopeWrap) return;
+
+      loveEnvelopeWrap.hidden = true;
+
+      loveLetterPaper.hidden = false;
+      loveLetterPaper.inert = false;
+      loveLetterPaper.setAttribute("aria-hidden", "false");
+
+      loveLetterPaper.classList.remove("is-opening", "is-writing");
+
+      void loveLetterPaper.offsetWidth;
+
+      loveLetterPaper.classList.add("is-opening");
+
+      window.setTimeout(() => {
+        loveLetterPaper.classList.add("is-writing");
+
+        startTypewriter();
+
+const paragraphs = $$(".typewriter-text", loveLetterPaper);
+
+const longestTypingDuration = paragraphs.reduce(
+  (longest, paragraph, paragraphIndex) => {
+    const fullText =
+      paragraph.dataset.fullText || paragraph.textContent;
+
+    const startDelay = 450 + paragraphIndex * 350;
+    const typingTime = fullText.length * 20;
+
+    return Math.max(
+      longest,
+      startDelay + typingTime
+    );
+  },
+  0
+);
+
+const typingDuration = reducedMotion
+  ? 100
+  : longestTypingDuration + 250;
+
+window.setTimeout(() => {
+  if (
+    letterNextButton &&
+    $("#scene9")?.classList.contains("active") &&
+    loveLetterPaper &&
+    !loveLetterPaper.hidden
+  ) {
+    letterNextButton.hidden = false;
+  }
+}, typingDuration);
+
+      }, reducedMotion ? 0 : 650);
+
+    }, reducedMotion ? 0 : 450);
+  });
+}
+
 /* =========================================================  
    SCENE NAVIGATION  
 ========================================================= */  
@@ -213,9 +339,9 @@ function showScene(sceneNumber) {
     birthdayMessageDisplay.textContent = birthdayMessage;  
   }  
   
-  if (index === 8) {  
-    startTypewriter();  
-  }  
+if (index === 8) {
+  resetLetterScene();
+}
   
   if (index === 0) {  
     resetFinalSurprise();  
@@ -251,8 +377,8 @@ if (restartButton) {
     closePhotoViewer();  
     resetFinalSurprise();  
     resetCakeWish();  
-    resetTypewriter();  
-    showScene(1);  
+   resetLetterScene();
+   showScene(1);
   });  
 }  
   
@@ -725,15 +851,15 @@ if (fireworksButton) {
   });  
 }  
   
-if (finalReplayButton) {  
-  finalReplayButton.addEventListener("click", () => {  
-    closePhotoViewer();  
-    resetFinalSurprise();  
-    resetCakeWish();  
-    resetTypewriter();  
-    showScene(1);  
-  });  
-}  
+if (finalReplayButton) {
+  finalReplayButton.addEventListener("click", () => {
+    closePhotoViewer();
+    resetFinalSurprise();
+    resetCakeWish();
+    resetLetterScene();
+    showScene(1);
+  });
+}
   
 /* =========================================================  
    PAGE VISIBILITY  
@@ -899,4 +1025,4 @@ giftMessage.hidden = false;
       });  
     }  
   });  
-}
+        }
