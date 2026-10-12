@@ -1526,4 +1526,309 @@ h2 span {
   .site-lock {
     transition: none;
   }
+    }
+
+/* =========================================
+   SCENE 9 — PREMIUM ROMANTIC LETTER
+========================================= */
+
+#scene9 .letter-scene-content {
+  width: min(100%, 680px);
+}
+
+#scene9 .subtitle {
+  margin-bottom: 28px;
+}
+
+/* Envelope container */
+
+.love-envelope-wrap {
+  width: min(100%, 360px);
+  margin: 30px auto;
+  perspective: 1000px;
+}
+
+.love-envelope {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1.5 / 1;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+  filter: drop-shadow(0 15px 20px rgba(151, 62, 101, .18));
+  transition: transform .3s ease;
+}
+
+.love-envelope:hover {
+  transform: translateY(-4px);
+}
+
+.love-envelope:focus-visible {
+  outline: 3px solid #a63e6d;
+  outline-offset: 6px;
+}
+
+.envelope-back,
+.envelope-front,
+.envelope-flap {
+  position: absolute;
+  inset: 0;
+  display: block;
+  border-radius: 12px;
+}
+
+.envelope-back {
+  z-index: 1;
+  background: linear-gradient(145deg, #f9c4d8, #df7fa3);
+}
+
+.envelope-letter-preview {
+  position: absolute;
+  z-index: 2;
+  top: 8%;
+  left: 8%;
+  width: 84%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid #f1d9ca;
+  border-radius: 5px;
+  color: #9d496b;
+  background: #fff8ef;
+  font-family: "Playfair Display", serif;
+  font-size: 1.2rem;
+  transition: transform .7s ease;
+}
+
+.envelope-front {
+  z-index: 4;
+  background: linear-gradient(145deg, #f6b7cf, #e98eb0);
+  clip-path: polygon(0 0, 50% 62%, 100% 0, 100% 100%, 0 100%);
+}
+
+.envelope-flap {
+  z-index: 5;
+  background: linear-gradient(135deg, #fbd4e1, #eaa0bc);
+  clip-path: polygon(0 0, 100% 0, 50% 63%);
+  transform-origin: top center;
+  backface-visibility: hidden;
+  transition: transform .8s ease, opacity .5s ease;
+}
+
+.envelope-seal {
+  position: absolute;
+  z-index: 6;
+  top: 43%;
+  left: 50%;
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  transform: translate(-50%, -50%);
+  border: 2px solid rgba(255,255,255,.8);
+  border-radius: 50%;
+  color: white;
+  background: linear-gradient(145deg, #bd496f, #e978a8);
+  box-shadow: 0 4px 15px rgba(166,62,109,.3);
+  font-size: 1.6rem;
+  animation: letterHeartPulse 1.8s ease-in-out infinite;
+  transition: opacity .3s ease;
+}
+
+@keyframes letterHeartPulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+
+.love-envelope.is-open {
+  pointer-events: none;
+}
+
+.love-envelope.is-open .envelope-flap {
+  z-index: 1;
+  transform: rotateX(180deg);
+  opacity: .5;
+}
+
+.love-envelope.is-open .envelope-seal {
+  opacity: 0;
+}
+
+.love-envelope.is-open .envelope-letter-preview {
+  transform: translateY(-18%);
+}
+
+.envelope-hint {
+  margin-top: 18px;
+  color: #a63e6d;
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  animation: letterHintFloat 2.5s ease-in-out infinite;
+}
+
+@keyframes letterHintFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* Letter paper */
+
+.letter-paper {
+  position: relative;
+  width: min(100%, 590px);
+  margin: 20px auto;
+  padding: 10px;
+  border: 1px solid rgba(193,141,108,.4);
+  border-radius: 8px;
+  color: #654452;
+  background: #fff8ed;
+  box-shadow: 0 18px 45px rgba(132,72,87,.14);
+  text-align: left;
+}
+
+.letter-paper[hidden],
+.letter-next-button[hidden] {
+  display: none !important;
+}
+
+.letter-paper-inner {
+  padding: clamp(22px, 5vw, 40px);
+  border: 1px solid rgba(193,141,108,.25);
+  background: linear-gradient(135deg, #fffdf8, #fff7ed);
+}
+
+.letter-top-decoration,
+.letter-bottom-decoration {
+  color: #c28b72;
+  font-family: "Playfair Display", serif;
+  text-align: center;
+}
+
+.letter-top-decoration {
+  margin-bottom: 24px;
+  letter-spacing: 3px;
+}
+
+.letter-greeting {
+  color: #a63e6d;
+  font-family: "Great Vibes", cursive;
+  font-size: 2.5rem;
+}
+
+.letter-paper .typewriter-text {
+  margin: 0 0 20px;
+  color: #654452;
+  font-family: "Playfair Display", serif;
+  font-size: 1rem;
+  line-height: 2;
+  overflow-wrap: anywhere;
+}
+
+.letter-paper .letter-signature {
+  margin-top: 28px;
+  color: #795568;
+  font-family: "Great Vibes", cursive;
+  font-size: 2.2rem;
+  text-align: right;
+}
+
+.letter-paper .letter-signature span {
+  color: #a63e6d;
+}
+
+.letter-bottom-decoration {
+  margin-top: 25px;
+  font-style: italic;
+}
+
+/* Letter entrance */
+
+.letter-paper.is-opening {
+  animation: letterPaperRise .8s ease both;
+}
+
+@keyframes letterPaperRise {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Letter text visibility and entrance animations */
+
+.letter-paper .letter-line,
+.letter-paper .letter-bottom-decoration {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+/* Greeting appears first */
+.letter-paper.is-writing .letter-greeting {
+  animation: letterTextReveal 0.6s 0.1s ease forwards;
+}
+
+/* Keep typewriter paragraphs visible while they are typing */
+.letter-paper.is-writing .typewriter-text {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Signature appears after the message */
+.letter-paper.is-writing .letter-signature {
+  animation: letterTextReveal 0.6s 0.4s ease forwards;
+}
+
+/* Footer appears last */
+.letter-paper.is-writing .letter-bottom-decoration {
+  animation: letterTextReveal 0.6s 0.7s ease forwards;
+}
+
+@keyframes letterTextReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile layout */
+
+@media (max-width: 480px) {
+  .love-envelope-wrap {
+    width: min(100%, 320px);
+  }
+
+  .envelope-seal {
+    width: 45px;
+    height: 45px;
+  }
+
+  .letter-paper {
+    padding: 6px;
+  }
+
+  .letter-paper-inner {
+    padding: 22px 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .envelope-seal,
+  .envelope-hint {
+    animation: none;
+  }
   }
