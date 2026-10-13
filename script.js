@@ -77,21 +77,34 @@ window.setTimeout(finishUnlock, 450);
 }
 
 if (siteLock && unlockForm && unlockPasswordInput) {
-document.body.style.overflow = "hidden";
+  document.body.style.overflow = "hidden";
 
-unlockForm.addEventListener("submit", (event) => {
-event.preventDefault();
+  unlockForm.addEventListener("submit", (event) => {
+    event.preventDefault();
 
-const enteredPassword = unlockPasswordInput.value.trim();  
+    const enteredPassword = unlockPasswordInput.value.trim();
 
-if (  
-  enteredPassword.toUpperCase() !==  
-  unlockPassword.toUpperCase()  
-) {  
-  if (lockError) {  
-    lockError.textContent =  
-      "Incorrect password. Try again, Ammu. ♡";  
-  }  
+    if (
+      enteredPassword.toUpperCase() !==
+      unlockPassword.toUpperCase()
+    ) {
+      if (lockError) {
+        lockError.textContent =
+          "Incorrect password. Try again, Ammu. ♡";
+      }
+
+      unlockPasswordInput.value = "";
+      unlockPasswordInput.focus();
+      return;
+    }
+
+    if (lockError) {
+      lockError.textContent = "";
+    }
+
+    unlockSite();
+  });
+}
 
   unlockPasswordInput.value = "";  
   unlockPasswordInput.focus();  
@@ -1082,4 +1095,4 @@ if (giftBoxButton) {
     // Show the existing final birthday surprise.
     revealFinalSurprise();
   });
-}
+  }
