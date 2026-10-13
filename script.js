@@ -106,16 +106,6 @@ if (siteLock && unlockForm && unlockPasswordInput) {
   });
 }
 
-  unlockPasswordInput.value = "";  
-  unlockPasswordInput.focus();  
-  return;  
-}  
-
-unlockSite();
-
-});
-}
-
 /* =========================================================
 TYPEWRITER LOVE LETTER
 ========================================================= */
