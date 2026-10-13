@@ -213,43 +213,6 @@ function startTypewriter() {
   typeParagraph();
 }
 
-  paragraphs.forEach((paragraph, paragraphIndex) => {
-    const fullText =
-      paragraph.dataset.fullText ||
-      paragraph.textContent.replace(/\s+/g, " ").trim();
-
-    paragraph.textContent = "";
-    paragraph.classList.add("typing");
-
-    let characterIndex = 0;
-
-    function typeNextCharacter() {
-      if (!letterScene.classList.contains("active")) {
-        paragraph.textContent = fullText;
-        paragraph.classList.remove("typing");
-        return;
-      }
-
-      if (characterIndex < fullText.length) {
-        paragraph.textContent += fullText.charAt(characterIndex);
-        characterIndex++;
-
-        const timer = window.setTimeout(typeNextCharacter, 20);
-        typewriterTimers.push(timer);
-      } else {
-        paragraph.classList.remove("typing");
-      }
-    }
-
-    const startTimer = window.setTimeout(
-      typeNextCharacter,
-      450 + paragraphIndex * 350
-    );
-
-    typewriterTimers.push(startTimer);
-  });
-}
-
 function resetTypewriter() {
 stopTypewriterTimers();
 typewriterStarted = false;
