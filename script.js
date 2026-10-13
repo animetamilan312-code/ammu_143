@@ -136,6 +136,70 @@ function startTypewriter() {
     return;
   }
 
+  let paragraphIndex = 0;
+
+  function typeParagraph() {
+    if (paragraphIndex >= paragraphs.length) return;
+
+    if (!letterScene.classList.contains("active")) {
+      paragraphs.forEach((paragraph) => {
+        paragraph.textContent =
+          paragraph.dataset.fullText || paragraph.textContent;
+
+        paragraph.classList.remove("typing");
+      });
+
+      return;
+    }
+
+    const paragraph = paragraphs[paragraphIndex];
+
+    const fullText =
+      paragraph.dataset.fullText ||
+      paragraph.textContent.replace(/\s+/g, " ").trim();
+
+    paragraph.textContent = "";
+    paragraph.classList.add("typing");
+
+    let characterIndex = 0;
+
+    function typeNextCharacter() {
+      if (!letterScene.classList.contains("active")) {
+        paragraph.textContent = fullText;
+        paragraph.classList.remove("typing");
+        return;
+      }
+
+      if (characterIndex < fullText.length) {
+        paragraph.textContent += fullText.charAt(characterIndex);
+        characterIndex++;
+
+        const timer = window.setTimeout(typeNextCharacter, 20);
+        typewriterTimers.push(timer);
+      } else {
+        paragraph.classList.remove("typing");
+        paragraphIndex++;
+
+        const nextParagraphTimer = window.setTimeout(
+          typeParagraph,
+          350
+        );
+
+        typewriterTimers.push(nextParagraphTimer);
+      }
+    }
+
+    const startTimer = window.setTimeout(
+      typeNextCharacter,
+      paragraphIndex === 0 ? 450 : 0
+    );
+
+    typewriterTimers.push(startTimer);
+  }
+
+  typeParagraph();
+}
+
   paragraphs.forEach((paragraph, paragraphIndex) => {
     const fullText =
       paragraph.dataset.fullText ||
@@ -993,36 +1057,29 @@ if (proposalYes) {
   });  
 }  
   
-/* =========================================================  
-   ANIMATED GIFT BOX  
-========================================================= */  
-  
-const giftBoxButton = $("#giftBoxButton");  
-const giftMessage = $("#giftMessage");  
-  
-if (giftBoxButton && giftMessage) {  
-  giftBoxButton.addEventListener("click", () => {  
-    const isOpen =  
-      giftBoxButton.getAttribute("aria-expanded") === "true";  
-  
-    // Prevent repeated toggling: the gift opens once.  
-    if (isOpen) return;  
-  
-giftBoxButton.setAttribute("aria-expanded", "true");  
-  
-const giftHint = giftBoxButton.querySelector(".gift-hint");  
-  
-if (giftHint) {  
-  giftHint.textContent = "Your surprise is here! 💗";  
-}  
-  
-giftMessage.hidden = false;  
-  
-    if (!reducedMotion) {  
-      giftMessage.scrollIntoView({  
-        behavior: "smooth",  
-        block: "center"  
-      });  
-    }  
-  });  
-        }
+/* =========================================================
+   ANIMATED GIFT BOX
+========================================================= */
+
+const giftBoxButton = $("#giftBoxButton");
+
+if (giftBoxButton) {
+  giftBoxButton.addEventListener("click", () => {
+    const isOpen =
+      giftBoxButton.getAttribute("aria-expanded") === "true";
+
+    // Open the gift only once.
+    if (isOpen) return;
+
+    giftBoxButton.setAttribute("aria-expanded", "true");
+
+    const giftHint = giftBoxButton.querySelector(".gift-hint");
+
+    if (giftHint) {
+      giftHint.textContent = "Your surprise is here! 💗";
+    }
+
+    // Show the existing final birthday surprise.
+    revealFinalSurprise();
+  });
+}
