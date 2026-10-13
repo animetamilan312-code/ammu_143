@@ -1058,4 +1058,4 @@ if (giftBoxButton) {
     // Show the existing final birthday surprise.
     revealFinalSurprise();
   });
-  }
+}
