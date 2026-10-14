@@ -128,12 +128,21 @@ function startTypewriter() {
 
   typewriterStarted = true;
 
+  // Save all original texts and hide every paragraph first.
+  paragraphs.forEach((paragraph) => {
+    if (!paragraph.dataset.fullText) {
+      paragraph.dataset.fullText =
+        paragraph.textContent.replace(/\s+/g, " ").trim();
+    }
+
+    paragraph.textContent = "";
+    paragraph.classList.remove("typing");
+  });
+
+  // Respect the user's reduced-motion preference.
   if (reducedMotion) {
     paragraphs.forEach((paragraph) => {
-      paragraph.textContent =
-        paragraph.dataset.fullText || paragraph.textContent;
-
-      paragraph.classList.remove("typing");
+      paragraph.textContent = paragraph.dataset.fullText;
     });
 
     return;
@@ -146,9 +155,7 @@ function startTypewriter() {
 
     if (!letterScene.classList.contains("active")) {
       paragraphs.forEach((paragraph) => {
-        paragraph.textContent =
-          paragraph.dataset.fullText || paragraph.textContent;
-
+        paragraph.textContent = paragraph.dataset.fullText;
         paragraph.classList.remove("typing");
       });
 
@@ -156,10 +163,7 @@ function startTypewriter() {
     }
 
     const paragraph = paragraphs[paragraphIndex];
-
-    const fullText =
-      paragraph.dataset.fullText ||
-      paragraph.textContent.replace(/\s+/g, " ").trim();
+    const fullText = paragraph.dataset.fullText;
 
     paragraph.textContent = "";
     paragraph.classList.add("typing");
@@ -177,18 +181,24 @@ function startTypewriter() {
         paragraph.textContent += fullText.charAt(characterIndex);
         characterIndex++;
 
-        const timer = window.setTimeout(typeNextCharacter, 20);
+        const timer = window.setTimeout(
+          typeNextCharacter,
+          20
+        );
+
         typewriterTimers.push(timer);
       } else {
         paragraph.classList.remove("typing");
         paragraphIndex++;
 
-        const nextParagraphTimer = window.setTimeout(
-          typeParagraph,
-          350
-        );
+        if (paragraphIndex < paragraphs.length) {
+          const nextParagraphTimer = window.setTimeout(
+            typeParagraph,
+            350
+          );
 
-        typewriterTimers.push(nextParagraphTimer);
+          typewriterTimers.push(nextParagraphTimer);
+        }
       }
     }
 
@@ -1039,13 +1049,13 @@ if (giftBoxButton) {
 
     giftBoxButton.setAttribute("aria-expanded", "true");
 
-    const giftHint = giftBoxButton.querySelector(".gift-hint");
-
-    if (giftHint) {
-      giftHint.textContent = "Your surprise is here! 💗";
+    // Reveal the existing birthday surprise.
+    if (finalSurprise) {
+      finalSurprise.hidden = false;
+      finalSurpriseRevealed = true;
     }
 
-    // Show the existing final birthday surprise.
-    revealFinalSurprise();
+    // Keep the existing fireworks effect.
+    launchFireworks(5000);
   });
-}
+      }
