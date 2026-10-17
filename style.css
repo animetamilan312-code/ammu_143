@@ -1210,6 +1210,7 @@ h2 span {
 
 .gift-section {
   position: relative;
+  isolation: isolate;
   margin: 32px auto;
   padding: clamp(22px, 5vw, 34px);
   border: 1px solid rgba(255, 255, 255, 0.95);
@@ -1250,7 +1251,13 @@ h2 span {
 .gift-box-button[aria-expanded="true"] {
   opacity: 0;
   transform: scale(0.94);
+  visibility: hidden;
   pointer-events: none;
+
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s ease,
+    visibility 0s linear 0.55s;
 }
 
 .gift-box-button:focus-visible {
@@ -1804,11 +1811,23 @@ h2 span {
   animation: letterTextReveal 0.6s 0.1s ease forwards;
 }
 
-/* Keep typewriter paragraphs visible while they are typing */
+/* Show only the paragraph that is currently typing */
 .letter-paper.is-writing .typewriter-text {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.letter-paper.is-writing .typewriter-text.typing,
+.letter-paper.is-writing .typewriter-text.is-complete {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.letter-paper.is-writing .typewriter-text.typing,
+.letter-paper.is-writing .typewriter-text.is-complete {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Signature appears after the message */
@@ -1854,4 +1873,4 @@ h2 span {
   .envelope-hint {
     animation: none;
   }
-  }
+}
