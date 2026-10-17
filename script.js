@@ -119,16 +119,13 @@ function startTypewriter() {
   if (typewriterStarted) return;
 
   const letterScene = $("#scene9");
-
   if (!letterScene) return;
 
   const paragraphs = $$(".typewriter-text", letterScene);
-
   if (!paragraphs.length) return;
 
   typewriterStarted = true;
 
-  // Save all original texts and hide every paragraph first.
   paragraphs.forEach((paragraph) => {
     if (!paragraph.dataset.fullText) {
       paragraph.dataset.fullText =
@@ -136,13 +133,13 @@ function startTypewriter() {
     }
 
     paragraph.textContent = "";
-    paragraph.classList.remove("typing");
+    paragraph.classList.remove("typing", "is-complete");
   });
 
-  // Respect the user's reduced-motion preference.
   if (reducedMotion) {
     paragraphs.forEach((paragraph) => {
       paragraph.textContent = paragraph.dataset.fullText;
+      paragraph.classList.add("is-complete");
     });
 
     return;
@@ -157,6 +154,7 @@ function startTypewriter() {
       paragraphs.forEach((paragraph) => {
         paragraph.textContent = paragraph.dataset.fullText;
         paragraph.classList.remove("typing");
+        paragraph.classList.add("is-complete");
       });
 
       return;
@@ -166,6 +164,7 @@ function startTypewriter() {
     const fullText = paragraph.dataset.fullText;
 
     paragraph.textContent = "";
+    paragraph.classList.remove("is-complete");
     paragraph.classList.add("typing");
 
     let characterIndex = 0;
@@ -174,6 +173,7 @@ function startTypewriter() {
       if (!letterScene.classList.contains("active")) {
         paragraph.textContent = fullText;
         paragraph.classList.remove("typing");
+        paragraph.classList.add("is-complete");
         return;
       }
 
@@ -189,6 +189,8 @@ function startTypewriter() {
         typewriterTimers.push(timer);
       } else {
         paragraph.classList.remove("typing");
+        paragraph.classList.add("is-complete");
+
         paragraphIndex++;
 
         if (paragraphIndex < paragraphs.length) {
@@ -202,9 +204,11 @@ function startTypewriter() {
       }
     }
 
+    const startDelay = paragraphIndex === 0 ? 450 : 0;
+
     const startTimer = window.setTimeout(
       typeNextCharacter,
-      paragraphIndex === 0 ? 450 : 0
+      startDelay
     );
 
     typewriterTimers.push(startTimer);
@@ -214,14 +218,15 @@ function startTypewriter() {
 }
 
 function resetTypewriter() {
-stopTypewriterTimers();
-typewriterStarted = false;
+  stopTypewriterTimers();
+  typewriterStarted = false;
 
-$$(".typewriter-text").forEach((paragraph) => {
-paragraph.classList.remove("typing");
-paragraph.textContent = paragraph.dataset.fullText ||
-paragraph.textContent;
-});
+  $$(".typewriter-text").forEach((paragraph) => {
+    paragraph.classList.remove("typing", "is-complete");
+
+    paragraph.textContent =
+      paragraph.dataset.fullText || paragraph.textContent;
+  });
 }
 
 /* Store original letter text before any animation begins. */
@@ -877,13 +882,25 @@ function revealFinalSurprise() {
   });  
 }  
   
-function resetFinalSurprise() {  
-  if (finalSurprise) {  
-    finalSurprise.hidden = true;  
-  }  
-  
-  finalSurpriseRevealed = false;  
-}  
+function resetFinalSurprise() {
+  if (finalSurprise) {
+    finalSurprise.hidden = true;
+
+    finalSurprise.style.removeProperty("top");
+    finalSurprise.style.removeProperty("left");
+    finalSurprise.style.removeProperty("width");
+    finalSurprise.style.removeProperty("max-width");
+    finalSurprise.style.removeProperty("margin");
+  }
+
+  const giftButton = $("#giftBoxButton");
+
+  if (giftButton) {
+    giftButton.setAttribute("aria-expanded", "false");
+  }
+
+  finalSurpriseRevealed = false;
+}
   
 if (fireworksButton) {  
   fireworksButton.addEventListener("click", () => {  
@@ -1044,18 +1061,22 @@ if (giftBoxButton) {
     const isOpen =
       giftBoxButton.getAttribute("aria-expanded") === "true";
 
-    // Open the gift only once.
-    if (isOpen) return;
+    if (isOpen || !finalSurprise) return;
+
+    const giftSection = giftBoxButton.closest(".gift-section");
+
+    if (!giftSection) {
+      console.warn(
+        "Gift box error: .gift-section element was not found."
+      );
+      return;
+    }
 
     giftBoxButton.setAttribute("aria-expanded", "true");
 
-    // Reveal the existing birthday surprise.
-    if (finalSurprise) {
-      finalSurprise.hidden = false;
-      finalSurpriseRevealed = true;
-    }
+    finalSurprise.hidden = false;
+    finalSurpriseRevealed = true;
 
-    // Keep the existing fireworks effect.
     launchFireworks(5000);
   });
-      }
+  }
