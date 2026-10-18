@@ -65,10 +65,9 @@ const finishUnlock = () => {
   showScene(1);
 
   // Automatically start birthday music after unlocking.
-  const song = $("#birthdaySong");
-
-  if (song) {
-    song.play().catch((error) => {
+  if (birthdaySong) {
+    birthdaySong.play().catch((error) => {
+      updateMusicButton(false);
       console.warn("Music could not start automatically.", error);
     });
   }
@@ -1123,4 +1122,4 @@ if (giftBoxButton) {
 
     launchFireworks(5000);
   });
-}
+                                      }
