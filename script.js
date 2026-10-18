@@ -598,7 +598,7 @@ if (birthdaySong && musicButton) {
         updateMusicButton(false);  
   
 console.warn(
-  "Music could not start. Check music/AUD-20261018-WA0000.mp3.",
+  "Music could not start. Check AUD-20261018-WA0000.mp3.",
   error
 );
       }  
@@ -609,7 +609,7 @@ console.warn(
   
   birthdaySong.addEventListener("error", () => {  
     updateMusicButton(false);  
-    console.warn("Music file not found. Check music/AUD-20261018-WA0000.mp3.");  
+console.warn("Music file not found. Check AUD-20261018-WA0000.mp3.");
   });  
 }  
   
