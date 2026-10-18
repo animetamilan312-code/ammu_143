@@ -7,7 +7,7 @@ PERSONAL SETTINGS
 const birthdayMessage = "WRITE YOUR PERSONAL BIRTHDAY MESSAGE HERE";
 
 // Change this password if you want.
-const unlockPassword = "AMMU";
+const unlockPassword = "IQRA";
 
 /* =========================================================
 HELPERS
@@ -1122,4 +1122,4 @@ if (giftBoxButton) {
 
     launchFireworks(5000);
   });
-                                      }
+}
