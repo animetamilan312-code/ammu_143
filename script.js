@@ -58,15 +58,23 @@ lockError.textContent = "";
 siteLock.classList.add("is-closing");
 
 const finishUnlock = () => {
-siteLock.hidden = true;
-siteLock.classList.remove("is-closing");
-document.body.style.overflow = "";
+  siteLock.hidden = true;
+  siteLock.classList.remove("is-closing");
+  document.body.style.overflow = "";
 
-showScene(1);  
+  showScene(1);
 
-const firstButton = $('#scene1 [data-next="2"]');  
-if (firstButton) firstButton.focus();
+  // Automatically start birthday music after unlocking.
+  const song = $("#birthdaySong");
 
+  if (song) {
+    song.play().catch((error) => {
+      console.warn("Music could not start automatically.", error);
+    });
+  }
+
+  const firstButton = $('#scene1 [data-next="2"]');
+  if (firstButton) firstButton.focus();
 };
 
 if (reducedMotion) {
@@ -1115,4 +1123,4 @@ if (giftBoxButton) {
 
     launchFireworks(5000);
   });
-      }
+}
