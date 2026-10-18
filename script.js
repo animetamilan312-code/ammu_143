@@ -246,8 +246,18 @@ const envelopeHint = $("#envelopeHint");
 const letterNextButton = $("#letterNextButton");
 
 let letterOpening = false;
+let letterSceneTimers = [];
+function clearLetterSceneTimers() {
+  letterSceneTimers.forEach((timer) => {
+    window.clearTimeout(timer);
+  });
+
+  letterSceneTimers = [];
+}
 
 function resetLetterScene() {
+  clearLetterSceneTimers();
+
   letterOpening = false;
 
   if (openLoveLetterButton) {
@@ -261,14 +271,19 @@ function resetLetterScene() {
   }
 
   if (envelopeHint) {
-    envelopeHint.textContent = "Tap the heart to open your letter ♡";
+    envelopeHint.textContent =
+      "Tap the heart to open your letter ♡";
   }
 
   if (loveLetterPaper) {
     loveLetterPaper.hidden = true;
     loveLetterPaper.inert = true;
     loveLetterPaper.setAttribute("aria-hidden", "true");
-    loveLetterPaper.classList.remove("is-opening", "is-writing");
+
+    loveLetterPaper.classList.remove(
+      "is-opening",
+      "is-writing"
+    );
   }
 
   if (letterNextButton) {
@@ -289,11 +304,32 @@ if (openLoveLetterButton) {
     openLoveLetterButton.disabled = true;
 
     if (envelopeHint) {
-      envelopeHint.textContent = "A little message, just for you... ♡";
+      envelopeHint.textContent =
+        "A little message, just for you... ♡";
     }
 
-    window.setTimeout(() => {
-      if (!loveLetterPaper || !loveEnvelopeWrap) return;
+    const scheduleLetterTimer = (callback, delay) => {
+      const timer = window.setTimeout(() => {
+        letterSceneTimers = letterSceneTimers.filter(
+          (savedTimer) => savedTimer !== timer
+        );
+
+        callback();
+      }, delay);
+
+      letterSceneTimers.push(timer);
+      return timer;
+    };
+
+    scheduleLetterTimer(() => {
+      if (
+        !loveLetterPaper ||
+        !loveEnvelopeWrap ||
+        !$("#scene9")?.classList.contains("active")
+      ) {
+        letterOpening = false;
+        return;
+      }
 
       loveEnvelopeWrap.hidden = true;
 
@@ -301,52 +337,49 @@ if (openLoveLetterButton) {
       loveLetterPaper.inert = false;
       loveLetterPaper.setAttribute("aria-hidden", "false");
 
-      loveLetterPaper.classList.remove("is-opening", "is-writing");
+      loveLetterPaper.classList.remove(
+        "is-opening",
+        "is-writing"
+      );
 
       void loveLetterPaper.offsetWidth;
 
       loveLetterPaper.classList.add("is-opening");
 
-      window.setTimeout(() => {
-        loveLetterPaper.classList.add("is-writing");
+      scheduleLetterTimer(() => {
+        if (!$("#scene9")?.classList.contains("active")) {
+          return;
+        }
 
+        loveLetterPaper.classList.add("is-writing");
         startTypewriter();
 
-const paragraphs = $$(".typewriter-text", loveLetterPaper);
+        const paragraphs = $$(".typewriter-text", loveLetterPaper);
 
-const longestTypingDuration = paragraphs.reduce(
-  (longest, paragraph, paragraphIndex) => {
-    const fullText =
-      paragraph.dataset.fullText || paragraph.textContent;
+        const totalTypingDuration = paragraphs.reduce(
+          (total, paragraph, paragraphIndex) => {
+            const fullText =
+              paragraph.dataset.fullText || paragraph.textContent;
 
-    const startDelay = 450 + paragraphIndex * 350;
-    const typingTime = fullText.length * 20;
+            return (
+              total +
+              (paragraphIndex === 0 ? 450 : 350) +
+              fullText.length * 20
+            );
+          },
+          0
+        );
 
-    return Math.max(
-      longest,
-      startDelay + typingTime
-    );
-  },
-  0
-);
-
-const typingDuration = reducedMotion
-  ? 100
-  : longestTypingDuration + 250;
-
-window.setTimeout(() => {
-  if (
-    letterNextButton &&
-    $("#scene9")?.classList.contains("active") &&
-    loveLetterPaper &&
-    !loveLetterPaper.hidden
-  ) {
-    letterNextButton.hidden = false;
-  }
-}, typingDuration);
-
+        scheduleLetterTimer(() => {
+          if (
+            letterNextButton &&
+            $("#scene9")?.classList.contains("active") &&
+            !loveLetterPaper.hidden
+          ) {
+            letterNextButton.hidden = false;
+          }
+        }, reducedMotion ? 100 : totalTypingDuration + 250);
       }, reducedMotion ? 0 : 650);
-
     }, reducedMotion ? 0 : 450);
   });
 }
@@ -386,6 +419,9 @@ function showScene(sceneNumber) {
   
 if (index === 8) {
   resetLetterScene();
+} else {
+  clearLetterSceneTimers();
+  stopTypewriterTimers();
 }
   
   if (index === 0) {  
@@ -1079,4 +1115,4 @@ if (giftBoxButton) {
 
     launchFireworks(5000);
   });
-  }
+                                 }
