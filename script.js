@@ -597,10 +597,10 @@ if (birthdaySong && musicButton) {
       } catch (error) {  
         updateMusicButton(false);  
   
-        console.warn(  
-          "Music could not start. Check music/Song.mp3.",  
-          error  
-        );  
+console.warn(
+  "Music could not start. Check music/LoveSong.mp3.",
+  error
+);
       }  
     } else {  
       birthdaySong.pause();  
@@ -609,7 +609,7 @@ if (birthdaySong && musicButton) {
   
   birthdaySong.addEventListener("error", () => {  
     updateMusicButton(false);  
-    console.warn("Music file not found. Check music/Song.mp3.");  
+    console.warn("Music file not found. Check music/LoveSong.mp3.");  
   });  
 }  
   
@@ -1106,8 +1106,7 @@ if (giftBoxButton) {
         "Gift box error: .gift-section element was not found."
       );
       return;
-    }
-
+}
     giftBoxButton.setAttribute("aria-expanded", "true");
 
     finalSurprise.hidden = false;
@@ -1115,4 +1114,4 @@ if (giftBoxButton) {
 
     launchFireworks(5000);
   });
-                                 }
+      }
